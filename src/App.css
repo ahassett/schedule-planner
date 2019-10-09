@@ -24,7 +24,7 @@
     color: #234660;
 }
 
-.schedule{
+.schedule {
     position: absolute;
     margin-left: 20px;
     border: 4px solid #234660;
@@ -33,7 +33,7 @@
     height: 510px;
 }
 
-.catelog{
+.catelog {
     position: absolute;
     border: 4px solid #234660;
     right: 500px;
@@ -41,4 +41,15 @@
     width: 730px;
     height: 510px;
     left: 660px;
+}
+.unsaved-class {
+  -webkit-transition: background-color 2s ease-out;
+  -moz-transition: background-color 2s ease-out;
+  -o-transition: background-color 2s ease-out;
+  transition: background-color 2s ease-out;
+}
+
+.saved-class {
+    background: #fff;
+    color: #56E39F;
 }

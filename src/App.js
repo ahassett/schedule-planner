@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ClassList from './components/ClassList';
 import ScheduleList from './components/ScheduleList';
+
 import { Tab, Tabs, TabContent } from 'react-bootstrap';
 
 import uuid from 'uuid';
@@ -27,6 +28,17 @@ class App extends Component {
         ]
     }
 
+    saveClass = (id) => {
+        console.log(id);
+        this.setState({ classes: this.state.classes.map(classname => {
+            if(classname.id === id){
+                classname.saved = !classname.saved
+            }
+            return classname;
+        })})
+
+    }
+
     render() {
         console.log(this.state.classes)
         return (
@@ -39,7 +51,7 @@ class App extends Component {
               </div>
 
               <div className='catelog'>
-                <ClassList classes={this.state.classes}/>
+                <ClassList classes={this.state.classes} saveClass={ this.saveClass }/>
               </div>
           </div>
         );

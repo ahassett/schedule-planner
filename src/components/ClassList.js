@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Card from 'react-bootstrap/Card';
-import Accordion from 'react-bootstrap/Accordion';
+import ClassItem from './ClassItem';
+import PropTypes from 'prop-types';
+
 
 
 class ClassList extends Component {
@@ -8,20 +9,14 @@ class ClassList extends Component {
     render() {
         console.log(this.props.classes);
         return this.props.classes.map((classname) => (
-            <Accordion defaultActiveKey="0">
-                <Card>
-                    <Accordion.Toggle as={Card.Header} eventKey="1">
-                        { classname.title }
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="1">
-                        <Card.Body>
-                            { classname.description }
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>
+            <ClassItem key={ classname.id } classname={ classname } saveClass={this.props.saveClass}/>
         ));
     }
+}
+
+// Checking PropTypes
+ClassList.propTypes = {
+    classes: PropTypes.array.isRequired
 }
 
 export default ClassList;
