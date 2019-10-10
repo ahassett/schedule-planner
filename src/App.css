@@ -17,6 +17,10 @@
   color: #09d3ac;
 }
 
+.theSchedule{
+  padding-top: 70px;
+}
+
 .page-header{
     text-align: center;
     margin-left: 20px;
@@ -33,7 +37,7 @@
     height: 510px;
 }
 
-.catelog {
+.catalog {
     position: absolute;
     border: 4px solid #234660;
     right: 500px;
@@ -51,5 +55,9 @@
 
 .saved-class {
     background: #fff;
-    color: #56E39F;
+    color: #65AFFF;
+}
+
+.new-schedule-button {
+    width: 593px;
 }
