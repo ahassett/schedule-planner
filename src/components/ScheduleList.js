@@ -28,6 +28,8 @@ class ScheduleList extends Component {
 
     renderTableHeader() {
       let header = Object.keys(this.state.itemArray[0])
+      header.splice(0, 1);
+      header.splice(0, 0, '');
       return header.map((key, index) => {
         return <th key={index}>{key}</th>
       })
