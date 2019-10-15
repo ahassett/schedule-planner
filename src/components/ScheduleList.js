@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
+
 import './ScheduleList.css';
 
 class ScheduleList extends Component {
@@ -20,10 +20,6 @@ class ScheduleList extends Component {
           ]
       }
 
-    }
-
-    createNewSchedule = () => {
-        console.log(this)
     }
 
     renderTableHeader() {
@@ -54,10 +50,7 @@ class ScheduleList extends Component {
 
     render() {
         return (
-          <div>
-            <div>
-                <Button variant='primary' className='new-schedule-button' onClick={this.createNewSchedule}>New Schedule</Button>
-            </div>
+          <div className='all_schedules'>
             <table id='itemArray'>
               <tbody>
                 <tr>{this.renderTableHeader()}</tr>
