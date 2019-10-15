@@ -69,7 +69,7 @@ class App extends Component {
 
               <div className='schedule'>
                 <div>
-                    <Button variant='primary' className='new-schedule-button' onClick={this.createNewSchedule}>New Schedule</Button>
+                    <Button color='primary' className='new-schedule-button' onClick={this.createNewSchedule}>New Schedule</Button>
                     {
                       this.state.list_schedules.map((item, index) => (
                         <ScheduleList key={item}/> // we can use the key to refer to the schedule clicked
