@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ClassItem from './ClassItem';
 import PropTypes from 'prop-types';
 
-
-
 class ClassList extends Component {
 
     render() {

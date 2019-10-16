@@ -1,35 +1,32 @@
 {
   "name": "schedule-planner",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
   "dependencies": {
-    "@syncfusion/ej2-react-grids": "^17.3.16",
-    "@syncfusion/ej2-react-schedule": "^17.3.16",
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
     "react": "^16.10.2",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.10.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "^3.2.0",
+    "request": "^2.88.0"
   },
+  "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahassett/schedule-planner.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahassett/schedule-planner/issues"
+  },
+  "homepage": "https://github.com/ahassett/schedule-planner#readme"
 }

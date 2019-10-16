@@ -9,6 +9,10 @@ class ScheduleList extends Component {
 
     createNewSchedule = () => {
         console.log(this)
+        // be able to create a completely new div inside
+        return (
+            <div className='schedule'></div>
+        )
     }
 
     render() {
