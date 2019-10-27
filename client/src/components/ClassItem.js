@@ -17,15 +17,6 @@ class ClassItem extends Component {
         }
     }
 
-    /*
-
-    <p>
-    <input type='checkbox' onChange={this.props.saveClass.bind(this, id)} /> {'   '}
-    { title }
-    </p>
-
-    */
-
     render() {
         const { id, title, description} = this.props.classname;
         return (

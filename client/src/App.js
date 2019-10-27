@@ -18,13 +18,17 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 701: Senior Seminar',
                 description: 'this is a class for seniors.',
-                saved: false
+                saved: false,
+                added: false,
+                locked: false
             },
             {
                 id: uuid(),
                 title: 'cs 702: Thesis',
                 description: 'this is a class for seniors who want to write a thesis.',
-                saved: false
+                saved: false,
+                added: false,
+                locked: false
             }
         ]
     }
@@ -57,6 +61,25 @@ class App extends Component {
         })})
 
     }
+    addClass = (id) => {
+        console.log(id);
+        this.setState({ classes: this.state.classes.map(classname => {
+            if(classname.id === id){
+                classname.added = !classname.added
+            }
+            return classname;
+        })})
+    }
+    lockClass = (id) => {
+        console.log(id);
+        this.setState({ classes: this.state.classes.map(classname => {
+            if(classname.id === id){
+                classname.locked = !classname.locked
+            }
+            return classname;
+        })})
+    }
+
     showSaved = (classname) => {
         console.log('hello')
         const savedClasses = this.state.classes.filter((classname) => {
@@ -80,10 +103,10 @@ class App extends Component {
               <div className='catalog'>
                   <Tabs defaultActiveKey={this.state.activeTab} id="tabs" onSelect={this.handleSelect} style={{'marginTop':'20px'}}>
                     <Tab eventKey='1' title="Catalog">
-                        <ClassList classes={this.state.classes} saveClass={ this.saveClass }/>
+                        <ClassList classes={this.state.classes} saveClass={this.saveClass}/>
                     </Tab>
                     <Tab eventKey='2' title="Saved Classes">
-                        <SavedList classes={this.state.classes} />
+                        <SavedList classes={this.state.classes} addClass={this.addClass} lockClass={this.lockClass}/>
                     </Tab>
                     </Tabs>
               </div>

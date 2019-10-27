@@ -58,6 +58,18 @@
     color: #65AFFF;
 }
 
+.added-class {
+    opacity: 0;
+    transition-duration: 1s;
+    transform: rotate(0deg);
+    opacity: 1;
+}
+
+.notadded-class {
+    transition-duration: 1s;
+    transform: rotate(45deg);
+}
+
 .new-schedule-button {
     width: 593px;
 }

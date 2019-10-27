@@ -8,7 +8,7 @@ class SavedList extends Component {
         const savedClasses = this.props.classes.filter((classname) => (classname.saved === true));
 
         return savedClasses.map((savedClass) => (
-            <SavedItem key={ savedClass.id } classname={ savedClass }/>
+            <SavedItem key={ savedClass.id } classname={savedClass} addClass={this.props.addClass} lockClass={this.props.lockClass}/>
         ))
             }
     }

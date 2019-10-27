@@ -67,11 +67,12 @@ app.get('/express_backend', (req, res) => {
                             if (item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) {
                                 itemString = item[0]
                                 termsOfferedArray.push(itemString)
-                            } else if (!item[0].includes('More Information >>')) {
+                            } else if (item.length > 1) {
+                                if ( !item[0].includes('More Information >>'))
                                 itemString = item[1]
                                 descriptionArray.push(itemString)
                             } else {
-                                //console.log($(value).text())
+                                console.log(item)
                             }
                         })
                         console.log(termsOfferedArray.length)
