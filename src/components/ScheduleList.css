@@ -22,3 +22,11 @@
 .all_schedules {
   padding: 10px;
 }
+
+.img_icon {
+  width: 23px;
+  height: 23px;
+  margin-left: 8px;
+  position: relative;
+  top: -408px;
+}
