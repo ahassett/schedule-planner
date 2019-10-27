@@ -12,8 +12,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
+  constructor() {
+    super ()
 
-    state = {
+    this.state = {
         classes: [
             {
                 id: uuid(),
@@ -28,7 +30,8 @@ class App extends Component {
                 saved: false
             }
         ],
-      list_schedules: []
+        list_schedules: [],
+      };
 
     }
 
@@ -60,6 +63,14 @@ class App extends Component {
         return savedClasses;
     }
 
+    // deletes a schedule when delete icon is clicked
+    handleDelete = (item_id) => {
+      this.setState(prevState => ({
+        list_schedules: prevState.list_schedules.filter(item => item != item_id )
+    }));
+
+    }
+
     render() {
         console.log(this.state.classes)
         return (
@@ -67,12 +78,12 @@ class App extends Component {
 
               <h1>Welcome Back!</h1>
 
-              <div className='schedule'>
+              <div className='schedule' onScroll={this.handleScroll}>
                 <div>
                     <Button color='primary' className='new-schedule-button' onClick={this.createNewSchedule}>New Schedule</Button>
                     {
                       this.state.list_schedules.map((item, index) => (
-                        <ScheduleList key={item}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item} delete_callback={this.handleDelete.bind(this, item)}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
