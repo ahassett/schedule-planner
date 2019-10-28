@@ -3,7 +3,7 @@ import ClassList from './components/ClassList';
 import ScheduleList from './components/ScheduleList';
 import SavedList from './components/SavedList';
 
-import { Tab, Tabs, TabContent, Dropdown } from 'react-bootstrap';
+import { Tab, Tabs, TabContent, Dropdown, Form, Button, FormControl } from 'react-bootstrap';
 
 import uuid from 'uuid';
 
@@ -18,7 +18,7 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 701: Senior Seminar',
                 description: 'this is a class for seniors.',
-                termsOffered: 'Winter 2020, Spring 2020',
+                termsOffered: 'Spring 2020',
                 saved: false,
                 added: false,
                 locked: false
@@ -27,7 +27,7 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 702: Thesis',
                 description: 'this is a class for seniors who want to write a thesis.',
-                termsOffered: 'Winter 2020',
+                termsOffered: 'Spring 2020, Winter 2020',
                 saved: false,
                 added: false,
                 locked: false
@@ -123,6 +123,10 @@ class App extends Component {
 
               <div className='catalog'>
 
+                  <Form inline style={{position:'absolute', top:'10px', right:'150px'}}>
+                    <FormControl type="text" placeholder="Search" className=" mr-sm-2" />
+                  </Form>
+
                   <Dropdown style={{position:'absolute', top:'10px', right:'15px'}}>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                       {this.state.dropDownMenu[0]}
@@ -139,7 +143,7 @@ class App extends Component {
                         <ClassList classes={this.state.classes} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass}/>
                     </Tab>
                     <Tab eventKey='2' title="Saved Classes">
-                        <SavedList classes={this.state.classes} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
+                        <SavedList classes={this.state.classes} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
                     </Tab>
                     </Tabs>
               </div>
