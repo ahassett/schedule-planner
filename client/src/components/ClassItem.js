@@ -27,7 +27,7 @@ class ClassItem extends Component {
                           onChange={this.props.saveClass.bind(this, id)}
                           custom
                           type='checkbox'
-                          id={this.props.classname.id}
+                          id={ id }
                           label={ title }
                         />
                     </Accordion.Toggle>

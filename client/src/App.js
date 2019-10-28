@@ -27,7 +27,7 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 702: Thesis',
                 description: 'this is a class for seniors who want to write a thesis.',
-                termOffered: 'Winter 2020',
+                termsOffered: 'Winter 2020',
                 saved: false,
                 added: false,
                 locked: false
@@ -136,7 +136,7 @@ class App extends Component {
 
                   <Tabs defaultActiveKey={this.state.activeTab} id="tabs" style={{'marginTop':'20px'}}>
                     <Tab eventKey='1' title="Catalog">
-                        <ClassList classes={this.state.classes} saveClass={this.saveClass}/>
+                        <ClassList classes={this.state.classes} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass}/>
                     </Tab>
                     <Tab eventKey='2' title="Saved Classes">
                         <SavedList classes={this.state.classes} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
