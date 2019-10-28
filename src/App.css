@@ -71,12 +71,16 @@ h1 {
     color: #65AFFF;
 }
 
-.new-schedule-button {
-    position: relative;
-    left: 72%;
-    margin-top: 2.5%;
-    margin-top: 1.5%;
-    width: 150px;
+.added-class {
+    opacity: 0;
+    transition-duration: 1s;
+    transform: rotate(0deg);
+    opacity: 1;
+}
+
+.notadded-class {
+    transition-duration: 1s;
+    transform: rotate(45deg);
 }
 
 .temp_button {

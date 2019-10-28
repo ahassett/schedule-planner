@@ -17,15 +17,6 @@ class ClassItem extends Component {
         }
     }
 
-    /*
-
-    <p>
-    <input type='checkbox' onChange={this.props.saveClass.bind(this, id)} /> {'   '}
-    { title }
-    </p>
-
-    */
-
     render() {
         const { id, title, description} = this.props.classname;
         return (
@@ -36,7 +27,7 @@ class ClassItem extends Component {
                           onChange={this.props.saveClass.bind(this, id)}
                           custom
                           type='checkbox'
-                          id={this.props.classname.id}
+                          id={ id }
                           label={ title }
                         />
                     </Accordion.Toggle>
