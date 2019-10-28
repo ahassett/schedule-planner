@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './ScheduleList.css';
 import star_icon from './star_icon.svg';
+import star from './star.svg';
 import email_icon from './email_icon.svg';
 import delete_icon from './delete_icon.svg';
 
@@ -22,11 +23,24 @@ class ScheduleList extends Component {
             {time: '3:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
             {time: '4:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
-      }
+          icon: false,
+          color: true
+      };
 
     }
 
+    changeColor() {
+       //this.setState({color: !this.state.color})
+
+       this.setState(prevState => ({
+         icon: !prevState.icon,
+         color: !prevState.color
+       }));
+    }
+
+
     renderTableHeader() {
+
       let header = Object.keys(this.state.itemArray[0])
       header.splice(0, 1);
       header.splice(0, 0, '');
@@ -59,18 +73,24 @@ class ScheduleList extends Component {
     render() {
 
       const { delete_callback } = this.props;
+      let header_color = this.state.color ? "beforeButton" : "afterButton";
+      //let src_icon = this.state.icon ? "star" : "star_icon";
+
 
         return (
           <div className='all_schedules'>
             <table id='itemArray'>
               <tbody>
-                <tr>{this.renderTableHeader()}</tr>
+                <tr className={header_color} >{this.renderTableHeader()}</tr>
                 {this.renderTableData()}
               </tbody>
             </table>
 
-            <img className='img_icon' src={email_icon} />
-            <img className='img_icon' src={star_icon}/>
+            <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body= courses">
+              <img className='img_icon' src={email_icon} />
+            </a>
+            {!this.state.icon && <img className='img_icon' src={star_icon} onClick={this.changeColor.bind(this)}/> }
+            {this.state.icon && <img className='img_icon' src={star} onClick={this.changeColor.bind(this)}/> }
             <img className='img_icon' src={delete_icon} onClick={() => {delete_callback()}}/>
 
           </div>

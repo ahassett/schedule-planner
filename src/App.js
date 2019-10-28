@@ -31,17 +31,26 @@ class App extends Component {
             }
         ],
         list_schedules: [],
+        button_position: false
       };
 
     }
 
     // adds a new schedule when button is clicked
     createNewSchedule = () => {
+
+      console.log(this.state.button_position);
+
       let list = this.state.list_schedules.slice();
       let name = 'schedule_'.concat(this.state.list_schedules.length);
       list.push(name);
 
       this.setState({ list_schedules: list});
+
+      if (this.state.list_schedules.length === 0) {
+        this.setState({ button_position: true });
+      }
+
     }
 
     saveClass = (id) => {
@@ -73,17 +82,24 @@ class App extends Component {
 
     render() {
         console.log(this.state.classes)
+
+        const {list_schedules, button_position} = this.state;
+
         return (
           <div className="App">
 
               <h1>Welcome Back!</h1>
 
               <div className='schedule' onScroll={this.handleScroll}>
+
+              {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
+
+
                 <div>
-                    <Button color='primary' className='new-schedule-button' onClick={this.createNewSchedule}>New Schedule</Button>
+                    {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
-                      this.state.list_schedules.map((item, index) => (
-                        <ScheduleList id={item} delete_callback={this.handleDelete.bind(this, item)}/> // we can use the key to refer to the schedule clicked
+                      list_schedules.map((item, index) => (
+                        <ScheduleList id={item} key={item} delete_callback={this.handleDelete.bind(this, item)}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
