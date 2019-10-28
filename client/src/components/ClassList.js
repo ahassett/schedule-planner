@@ -5,9 +5,12 @@ import PropTypes from 'prop-types';
 class ClassList extends Component {
 
     render() {
-        return this.props.classes.map((classname) => (
+        return (
+            this.props.classes.map((classname) => (
             <ClassItem key={ classname.id } classname={ classname } saveClass={this.props.saveClass}/>
-        ));
+        ))
+    )
+
     }
 }
 

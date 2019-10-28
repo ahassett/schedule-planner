@@ -3,7 +3,7 @@ import ClassList from './components/ClassList';
 import ScheduleList from './components/ScheduleList';
 import SavedList from './components/SavedList';
 
-import { Tab, Tabs, TabContent } from 'react-bootstrap';
+import { Tab, Tabs, TabContent, Dropdown } from 'react-bootstrap';
 
 import uuid from 'uuid';
 
@@ -56,6 +56,11 @@ class App extends Component {
         this.setState({ classes: this.state.classes.map(classname => {
             if(classname.id === id){
                 classname.saved = !classname.saved
+
+                if(classname.saved === false) {
+                    classname.added = false
+                    classname.locked = false
+                }
             }
             return classname;
         })})
@@ -101,12 +106,22 @@ class App extends Component {
               </div>
 
               <div className='catalog'>
+                  <Dropdown style={{position:'absolute', top:'10px', right:'15px'}}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Winter 2020
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="#/action-1">Spring 2020</Dropdown.Item>
+                      <Dropdown.Item href="#/action-2">Fall 2020</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                   <Tabs defaultActiveKey={this.state.activeTab} id="tabs" onSelect={this.handleSelect} style={{'marginTop':'20px'}}>
                     <Tab eventKey='1' title="Catalog">
                         <ClassList classes={this.state.classes} saveClass={this.saveClass}/>
                     </Tab>
                     <Tab eventKey='2' title="Saved Classes">
-                        <SavedList classes={this.state.classes} addClass={this.addClass} lockClass={this.lockClass}/>
+                        <SavedList classes={this.state.classes} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
                     </Tab>
                     </Tabs>
               </div>
