@@ -18,6 +18,7 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 701: Senior Seminar',
                 description: 'this is a class for seniors.',
+                termsOffered: 'Winter 2020, Spring 2020',
                 saved: false,
                 added: false,
                 locked: false
@@ -26,11 +27,13 @@ class App extends Component {
                 id: uuid(),
                 title: 'cs 702: Thesis',
                 description: 'this is a class for seniors who want to write a thesis.',
+                termOffered: 'Winter 2020',
                 saved: false,
                 added: false,
                 locked: false
             }
-        ]
+        ],
+        dropDownMenu: [ 'Winter 2020', 'Spring 2020', 'Fall 2020' ]
     }
 
     componentDidMount() {
@@ -94,6 +97,19 @@ class App extends Component {
         return savedClasses;
     }
 
+    dropDownDisplay = (selectedClass) => {
+        console.log(selectedClass)
+        const dropDown = this.state.dropDownMenu
+        if (this.state.dropDownMenu.includes(selectedClass)) {
+            const swapIndex = dropDown.indexOf(selectedClass)
+            const temp = dropDown[0]
+
+            dropDown[0] = dropDown[swapIndex]
+            dropDown[swapIndex] = temp
+        }
+        this.setState({ dropDownMenu: dropDown })
+    }
+
     render() {
         console.log(this.state.classes)
         return (
@@ -106,17 +122,19 @@ class App extends Component {
               </div>
 
               <div className='catalog'>
+
                   <Dropdown style={{position:'absolute', top:'10px', right:'15px'}}>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Winter 2020
+                      {this.state.dropDownMenu[0]}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item href="#/action-1">Spring 2020</Dropdown.Item>
-                      <Dropdown.Item href="#/action-2">Fall 2020</Dropdown.Item>
+                      <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[1])}>{this.state.dropDownMenu[1]}</Dropdown.Item>
+                      <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[2])}>{this.state.dropDownMenu[2]}</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-                  <Tabs defaultActiveKey={this.state.activeTab} id="tabs" onSelect={this.handleSelect} style={{'marginTop':'20px'}}>
+
+                  <Tabs defaultActiveKey={this.state.activeTab} id="tabs" style={{'marginTop':'20px'}}>
                     <Tab eventKey='1' title="Catalog">
                         <ClassList classes={this.state.classes} saveClass={this.saveClass}/>
                     </Tab>
