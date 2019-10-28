@@ -12,6 +12,8 @@ class ScheduleList extends Component {
       super(props)
 
       this.state = {
+          color: true,
+          icon: false,
           itemArray: [
             {time: '8:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
             {time: '9:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
@@ -23,19 +25,18 @@ class ScheduleList extends Component {
             {time: '3:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
             {time: '4:00', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
-          icon: false,
-          color: true
       };
 
     }
 
+    // changes state color of the star and state font of the schedule Name
     changeColor() {
-       //this.setState({color: !this.state.color})
 
        this.setState(prevState => ({
          icon: !prevState.icon,
          color: !prevState.color
        }));
+
     }
 
 
@@ -72,13 +73,19 @@ class ScheduleList extends Component {
 
     render() {
 
-      const { delete_callback } = this.props;
+      const { delete_callback, name } = this.props;
+      const { icon } = this.state;
+
       let header_color = this.state.color ? "beforeButton" : "afterButton";
+
+      let icons_occupy = this.state.icon ? "icons_occupy" : "icons_allow";
+
       //let src_icon = this.state.icon ? "star" : "star_icon";
 
 
         return (
           <div className='all_schedules'>
+          <div className='tableName' >{name.charAt(0).toUpperCase() + name.slice(1)}</div>
             <table id='itemArray'>
               <tbody>
                 <tr className={header_color} >{this.renderTableHeader()}</tr>
@@ -87,11 +94,11 @@ class ScheduleList extends Component {
             </table>
 
             <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body= courses">
-              <img className='img_icon' src={email_icon} />
+              <img className={icons_occupy} src={email_icon} />
             </a>
-            {!this.state.icon && <img className='img_icon' src={star_icon} onClick={this.changeColor.bind(this)}/> }
-            {this.state.icon && <img className='img_icon' src={star} onClick={this.changeColor.bind(this)}/> }
-            <img className='img_icon' src={delete_icon} onClick={() => {delete_callback()}}/>
+            { !icon && <img className={icons_occupy} src={star_icon} onClick={this.changeColor.bind(this)}/> }
+            { icon && <img className={icons_occupy} src={star} onClick={this.changeColor.bind(this)}/> }
+            { !icon && <img className={icons_occupy} src={delete_icon} onClick={() => {delete_callback()}}/> }
 
           </div>
         );
