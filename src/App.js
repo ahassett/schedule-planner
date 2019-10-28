@@ -3,7 +3,7 @@ import ClassList from './components/ClassList';
 import ScheduleList from './components/ScheduleList';
 import SavedList from './components/SavedList';
 
-import { Tab, Tabs, TabContent } from 'react-bootstrap';
+import { Tab, Tabs, TabContent, Toast } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
 import uuid from 'uuid';
@@ -31,7 +31,8 @@ class App extends Component {
             }
         ],
         list_schedules: [],
-        button_position: false
+        button_position: false,
+        show: false
       };
 
     }
@@ -76,21 +77,25 @@ class App extends Component {
     handleDelete = (item_id) => {
       this.setState(prevState => ({
         list_schedules: prevState.list_schedules.filter(item => item != item_id )
-    }));
+      }));
+
+      this.setState({ show: true });
 
     }
 
     render() {
         console.log(this.state.classes)
 
-        const {list_schedules, button_position} = this.state;
+        const {list_schedules, button_position, show} = this.state;
 
         return (
           <div className="App">
 
-              <h1>Welcome Back!</h1>
+              <h1>Course Catalog and Schedule</h1>
 
               <div className='schedule' onScroll={this.handleScroll}>
+
+
 
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
 
@@ -99,12 +104,14 @@ class App extends Component {
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
                       list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} delete_callback={this.handleDelete.bind(this, item)}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item} key={item} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
-                <div id="schedules">
-                </div>
+
+                { show && <Toast id="toast" onClose={() => this.setState({ show: false })} show={show} delay={1000} autohide>
+                  <Toast.Body>schedule deleted!</Toast.Body>
+                </Toast> }
 
               </div>
 
