@@ -63,7 +63,9 @@ h1 {
     width: 730px;
     height: 540px;
     left: 660px;
+    overflow-y: scroll;
 }
+
 .unsaved-class {
   -webkit-transition: background-color 2s ease-out;
   -moz-transition: background-color 2s ease-out;

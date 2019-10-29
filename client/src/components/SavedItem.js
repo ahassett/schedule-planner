@@ -47,8 +47,8 @@ class SavedItem extends Component {
                               id={this.props.classname.id}
                               label={ this.props.classname.title }
                             />
-                        <img src={this.getLockedSrc()} onClick={this.props.lockClass.bind(this, id)} width='30px' height='30px' style={{position:'absolute', left:'645px', top:'10px'}}/>
-                        <img src={this.getAddedSrc()} onClick={this.props.addClass.bind(this, id)} className={ this.getAddedStyle() } width='30px' height='30px' style ={{position:'absolute', left:'680px', top:'10px'}}/>
+                        <img src={this.getLockedSrc()} onClick={this.props.lockClass.bind(this, id)} width='30px' height='30px' style={{position:'absolute', left:'635px', top:'10px'}}/>
+                        <img src={this.getAddedSrc()} onClick={this.props.addClass.bind(this, id)} className={ this.getAddedStyle() } width='30px' height='30px' style ={{position:'absolute', left:'670px', top:'10px'}}/>
                         </Accordion.Toggle>
                     </Card>
                 </Accordion>
