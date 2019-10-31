@@ -256,10 +256,7 @@ class App extends Component {
 
               <div className='schedule' onScroll={this.handleScroll}>
 
-
-
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
-
 
                 <div>
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
