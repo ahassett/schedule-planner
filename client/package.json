@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@syncfusion/ej2-react-grids": "^17.3.16",
-    "@syncfusion/ej2-react-schedule": "^17.3.16",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "cheerio": "^1.0.0-rc.3",
