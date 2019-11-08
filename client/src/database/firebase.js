@@ -1,12 +1,3 @@
-// const config = {
-//   apiKey: 'AIzaSyBbHIT3RJRFG95doFIrj0_or5IClHs-HVg',
-//   authDomain: 'schedule-planner-1f461.firebaseapp.com',
-//   databaseURL: 'https://schedule-planner-1f461.firebaseio.com',
-//   projectId: 'schedule-planner-1f461',
-//   storageBucket: '',
-//   messagingSenderId: '203514915297',
-// };
-
 import app from 'firebase/app';
 
 const config = {
