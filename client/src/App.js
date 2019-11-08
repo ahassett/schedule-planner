@@ -10,6 +10,18 @@ import uuid from 'uuid';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import LandingPage from './components/Landing';
+import SignUpPage from './components/SignUp';
+import SignInPage from './components/SignIn';
+import PasswordForgetPage from './components/PasswordForget';
+import HomePage from './components/Home';
+import AccountPage from './components/Account';
+import AdminPage from './components/Admin';
+
+import * as ROUTES from './constants/routes';
+
 class App extends Component {
   constructor() {
     super ()
@@ -254,6 +266,22 @@ class App extends Component {
 
               <h1>Course Catalog and Schedule</h1>
 
+              <Router>
+                <div>
+                  <Navigation />
+                  <hr />
+
+                    <Route exact path={ROUTES.LANDING} component={LandingPage} />
+                    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+                    <Route path={ROUTES.HOME} component={HomePage} />
+                    <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+                    <Route path={ROUTES.ADMIN} component={AdminPage} />
+
+                </div>
+              </Router>
+
               <div className='schedule' onScroll={this.handleScroll}>
 
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
@@ -262,7 +290,7 @@ class App extends Component {
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
                       list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} classes={this.state.classes} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item} key={item} classes={this.state.classes.filter((classname) => classname.saved === true)} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
