@@ -30,7 +30,7 @@ class ScheduleList extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.classes)
+        console.log('component did mount')
         //this.displayOnSchedule();
     }
 
@@ -83,9 +83,45 @@ class ScheduleList extends Component {
       })
     }
 
+//     addClassToSchedule() {
+//         // look at term offered and extract info of date and time
+//         // locate ':' and look for dates before that
+//         // once dates are found, calculate where to put them
+//         // display on schedule_
+//         this.props.classes.map((classname) => {
+//             const classDaysArray = [];
+//             const datesTimesArray = classname.timesOffered.split(':');
+//             console.log(datesTimesArray)
+//
+//             // find dates and corresponding times
+//             datesTimesArray.forEach((element, index) => {
+//
+//                 if (index % 2 === 0) {
+//                     console.log(element)
+//                     this.state.itemArray.forEach((item) => {
+//                         console.log(item[])
+//                         console.log(element.toLowerCase().includes(item))
+//                         if (element.includes(item)) {
+//                             classDaysArray.push(item)
+//
+//                             classDaysArray.forEach((classday) => {
+//                                 if (this.state.itemArray.time.includes(element[element.length - 1]))
+//                                     console.log(element[element.length - 1].charAt(element.length - 1)) // hour of class
+//                             })
+//                         }
+//                     })
+//                 }
+//
+//             return (
+//                 <div>{classname}</div>
+//             )
+//         })
+//     })
+// }
+
     render() {
-      console.log(this.props.classes)
-      const { delete_callback, name } = this.props;
+      const { delete_callback, name, classes } = this.props;
+      console.log(classes);
       const { icon } = this.state;
 
       let header_color = this.state.color ? "beforeButton" : "afterButton";
@@ -93,7 +129,6 @@ class ScheduleList extends Component {
       let icons_occupy = this.state.icon ? "icons_occupy" : "icons_allow";
 
       //let src_icon = this.state.icon ? "star" : "star_icon";
-
 
         return (
           <div className='all_schedules'>
@@ -104,6 +139,8 @@ class ScheduleList extends Component {
                 {this.renderTableData()}
               </tbody>
             </table>
+
+            {this.addClassToSchedule()}
 
             <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
               <img className={icons_occupy} src={email_icon} />
