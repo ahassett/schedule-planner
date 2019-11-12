@@ -30,7 +30,7 @@ class ScheduleList extends Component {
       };
 
     }
-
+  
     // changes state color of the star and state font of the schedule Name
     changeColor() {
        this.setState(prevState => ({
@@ -100,7 +100,6 @@ class ScheduleList extends Component {
 
       //let src_icon = this.state.icon ? "star" : "star_icon";
 
-
         return (
           <div className='all_schedules'>
             <div className='tableName' >
@@ -117,6 +116,8 @@ class ScheduleList extends Component {
                 {this.renderTableData()}
               </tbody>
             </table>
+
+            {this.addClassToSchedule()}
 
             <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
               <img className={icons_occupy} src={email_icon} />
