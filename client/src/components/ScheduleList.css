@@ -12,10 +12,27 @@
   padding: 8px;
 }
 
+.input_text {
+  border: none;
+  background-color: grey;
+  color: white;
+}
+
+.input_text:hover {
+  font-size: 1.4rem;
+}
+
+.input_text:focus {
+  outline-width: 0;
+}
+
+.input_text input, .input_text span {
+    white-space: pre;
+}
+
 .tableName {
   background-color: grey;
   border-radius: 16px 16px 0px 0px;
-  color: white;
   height: 60px;
   font-size: 1.5rem;;
   padding: 16px 0px 16px 9px;
