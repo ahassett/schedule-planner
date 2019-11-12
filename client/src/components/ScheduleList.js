@@ -25,8 +25,7 @@ class ScheduleList extends Component {
             {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
           title: props.name ? props.name.charAt(0).toUpperCase() + props.name.slice(1): '',
-          class: props.classes,
-          item:[]
+          class: props.classes
       };
 
     }
@@ -45,12 +44,12 @@ class ScheduleList extends Component {
     }
 
 
-    displayOnSchedule() {
-      if (this.state.class) {
-        console.log(this.state.class.timesOffered);
-
-      }
-    }
+    // displayOnSchedule() {
+    //   if (this.state.class) {
+    //     console.log(this.state.class.timesOffered);
+    //
+    //   }
+    // }
 
     renderTableHeader() {
 

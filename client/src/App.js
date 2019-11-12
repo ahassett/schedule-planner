@@ -10,6 +10,134 @@ import uuid from 'uuid';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+function formatit(courses) {
+  let all_courses = [];
+
+  // the time slots that originally show on the schedule
+  let slots = [
+    {time: '8:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '9:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '10:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '11:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '12:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '1:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '2:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '3:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
+    {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
+  ];
+
+  // the one item in this list is important for starting the for each loop below
+  // but id has no significance
+  let prev_time = [0];
+
+  // for each of the added courses, run this loop
+  console.log('courses',courses);
+  courses.forEach(term => {
+    let str_term = term.timesOffered; // only get the time
+    console.log('str_term', str_term);
+
+    let dash_loc;
+    let strArr = []; // array for different times in case a class is offered at different times in a week
+
+    // populate strArr
+    while(str_term.includes('-')) {
+      dash_loc = str_term.indexOf('-');
+      strArr.push(str_term.substring(0, dash_loc + 10));
+      str_term = str_term.substring(dash_loc + 10);
+
+
+            // if (!str_term) {
+            //   break
+            // }
+            // console.log('while', !str_term);
+            //
+    }
+
+    // for each of the item in array, create and populate the object
+    strArr.forEach(str => {
+
+      dash_loc = str.indexOf('-');
+
+      // obtain times with no meridians and spaces
+      let time_str = str.substring(dash_loc - 9, dash_loc + 10).replace(/ pm/gi, '');
+      time_str = time_str.replace(/ am/gi, '');
+      time_str = time_str.replace(/ /gi, '');
+
+      // create a list, so as to loop over days and time
+      str = str.substring(0, dash_loc - 4) + str.substring(dash_loc + 10);
+      str = str.split(' ');
+
+      let end, mon = '', tues = '', wed = '', thurs = '', fri = '', time= '', day = '';
+
+      // loop over days and time in str array
+      str.forEach(item => {
+
+        if (!parseInt(item.slice(0, 1))) {
+          if (item.slice(0, 1) == "T") {
+            end = 4
+          } else {
+            end = 3
+          }
+
+          day = item.slice(0, end);
+          end = term.title.indexOf('-');
+
+          let new_title = time_str + ' ' + term.title.slice(0, end).replace(' ', '');
+
+          if (day.localeCompare('Mon') === 0) {
+            mon = new_title
+          } else if (day.localeCompare('Tues') === 0) {
+            tues = new_title
+          } else if (day.localeCompare('Wed') === 0) {
+            wed = new_title
+          } else if (day.localeCompare('Thur') === 0) {
+            thurs = new_title
+          } else {
+            fri = new_title
+          }
+        } else {
+
+          if (parseInt(item.slice(0, item.search(/[:]/g))) > 4) {
+
+            time = item + ' am';
+            console.log(time);
+
+          } else {
+            time = item + ' pm';
+          }
+        }
+
+      });
+
+      prev_time.forEach(i => {
+        if (!prev_time.includes(time)) {
+          all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri});
+          console.log(time);
+          prev_time.push(time);
+        }
+      });
+
+    })
+
+  });
+
+  let formatted_slots = [];
+
+  // create an entire schedule slot so that we can pass all slots as props
+  // then render for every prop change
+  slots.map(slot => {
+    if (prev_time.includes(slot.time)){
+      formatted_slots.push(all_courses.find(element => (element.time.localeCompare(slot.time) === 0)))
+    } else {
+      formatted_slots.push(slot)
+    }
+
+  });
+
+  return formatted_slots;
+}
+
+
 class App extends Component {
   constructor() {
     super ()
@@ -51,7 +179,7 @@ class App extends Component {
               title: 'CSCI 0201 - Data Structures',
               description: 'In this course we will study the ideas and structures helpful in designing algorithms and writing programs for solving large, complex problems. The Java programming language and object-oriented paradigm are introduced in the context of important abstract data types (ADTs) such as stacks, queues, trees, and graphs. We will study efficient implementations of these ADTs, and learn classic algorithms to manipulate these structures for tasks such as sorting and searching. Prior programming experience is expected, but prior familiarity with the Java programming language is not assumed. (One CSCI course at the 0100-level) (Juniors and Seniors by waiver) 3 hrs. lect./lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
-              timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm Friday 11:00 am - 12:00 pm',
               saved: false,
               added: false,
               locked: false
@@ -161,7 +289,11 @@ class App extends Component {
         button_position: false,
         show: false,
         dropDownMenu: [ 'Spring 2019', 'Fall 2019', 'Spring 2020'],
-        searchedTerm: ''
+        searchedTerm: '',
+        added_classes: [],
+        formatted: {},
+        bool_run: false,
+        times: {time: '', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
       };
       this.searchHandler = this.searchHandler.bind(this);
 
@@ -185,7 +317,6 @@ class App extends Component {
     }
 
     saveClass = (id) => {
-        console.log(id);
         this.setState({ classes: this.state.classes.map(classname => {
             if(classname.id === id){
                 classname.saved = !classname.saved
@@ -194,22 +325,58 @@ class App extends Component {
                     classname.added = false
                     classname.locked = false
                 }
+
+
             }
             return classname;
         })})
 
     }
     addClass = (id) => {
-        console.log(id);
+        let temp_list = []; // array of classes to be displayed on schedule
+        let removed = [];  // array of removed classes
+        let new_class = '0';  // variable for the newest class added
+
         this.setState({ classes: this.state.classes.map(classname => {
             if(classname.id === id){
-                classname.added = !classname.added
+                classname.added = !classname.added;
+                this.setState({bool_run: true})
             }
+
+            // store the new class
+            // if statement important to keep track of removed classes
+            if (classname.added === true) {
+
+              if (!this.state.added_classes.includes(classname)) {
+                new_class = classname;
+              }
+
+            } else {
+              // store removed item
+              if (this.state.added_classes.includes(classname)) {
+                removed.push(classname)
+              }
+            }
+
             return classname;
         })})
+
+        this.state.added_classes.forEach(remove => {
+          if (!removed.includes(remove)) {
+            temp_list.push(remove);
+          }
+        })
+
+        if (new_class != '0') {
+          temp_list.push(new_class);
+        }
+
+        this.setState({added_classes: temp_list});
+        this.setState({formatted: formatit(temp_list)})
+
     }
+
     lockClass = (id) => {
-        console.log(id);
         this.setState({ classes: this.state.classes.map(classname => {
             if(classname.id === id){
                 classname.locked = !classname.locked
@@ -219,7 +386,6 @@ class App extends Component {
     }
 
     dropDownDisplay = (selectedClass) => {
-        console.log(selectedClass)
         const dropDown = this.state.dropDownMenu
         if (this.state.dropDownMenu.includes(selectedClass)) {
             const swapIndex = dropDown.indexOf(selectedClass)
@@ -245,27 +411,25 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.state.classes)
 
-        const {list_schedules, button_position, show} = this.state;
+        const {list_schedules, button_position, bool_run, show} = this.state;
 
         return (
           <div className="App">
 
               <h1>Course Catalog and Schedule</h1>
 
-              <div className='schedule' onScroll={this.handleScroll}>
+              <div className='schedule'>
 
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
 
-                <div>
-                    {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
-                    {
-                      list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} classes={this.state.classes} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
-                    ))
-                    }
-                </div>
+              {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
+              {
+                list_schedules.map((item, index) => (
+                  <ScheduleList id={item} key={item} classes={this.state.formatted} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
+              ))
+              }
+
 
                 <div className="div_toast">
                     { show && <Toast id="toast" onClose={() => this.setState({ show: false })} show={show} delay={1000} autohide>
