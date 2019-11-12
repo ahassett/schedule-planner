@@ -6,7 +6,6 @@ import star from './star.svg';
 import email_icon from './email_icon.svg';
 import delete_icon from './delete_icon.svg';
 
-
 class ScheduleList extends Component {
     constructor(props) {
       super(props)
@@ -25,33 +24,34 @@ class ScheduleList extends Component {
             {time: '3:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
             {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
+          title: props.name ? props.name.charAt(0).toUpperCase() + props.name.slice(1): '',
+          class: props.classes,
+          item:[]
       };
 
     }
 
-    componentDidMount() {
-        console.log(this.props.classes)
-        //this.displayOnSchedule();
-    }
-
     // changes state color of the star and state font of the schedule Name
     changeColor() {
-
        this.setState(prevState => ({
          icon: !prevState.icon,
          color: !prevState.color
        }));
 
     }
-/*
-    displayOnSchedule() {
-        if (this.props.classes.classname.saved) {
-            // check which dates and times to display
-            const times = classname.timesOffered.charAt(classname.timesOffered.search(/\d/))
-            console.log(times)
-        }
+
+    handleChange(e) {
+      this.setState({ title: e.target.value });
     }
-*/
+
+
+    displayOnSchedule() {
+      if (this.state.class) {
+        console.log(this.state.class.timesOffered);
+
+      }
+    }
+
     renderTableHeader() {
 
       let header = Object.keys(this.state.itemArray[0])
@@ -64,10 +64,6 @@ class ScheduleList extends Component {
 
     // contents of the schedule-table
     renderTableData() {
-      // if (this.props.courses) {
-      //   itemArray.push(this.props.courses);
-      // }
-
       return this.state.itemArray.map((itemArray, index) => {
         const { time, Mon, Tues, Wed, Thurs, Fri } = itemArray // destructuring
         return (
@@ -83,10 +79,20 @@ class ScheduleList extends Component {
       })
     }
 
+    static getDerivedStateFromProps(props, state) {
+
+      if (props.classes !== state.class) {
+        return {
+          itemArray: props.classes
+        };
+      }
+      return null;
+    }
+
     render() {
-      console.log(this.props.classes)
-      const { delete_callback, name } = this.props;
-      const { icon } = this.state;
+
+      const { delete_callback } = this.props;
+      const { icon, title } = this.state;
 
       let header_color = this.state.color ? "beforeButton" : "afterButton";
 
@@ -97,7 +103,14 @@ class ScheduleList extends Component {
 
         return (
           <div className='all_schedules'>
-          <div className='tableName' >{name.charAt(0).toUpperCase() + name.slice(1)}</div>
+            <div className='tableName' >
+              <input
+                className='input_text'
+                type="text"
+                value={title}
+                onChange={this.handleChange.bind(this)}
+                />
+              </div>
             <table id='itemArray'>
               <tbody>
                 <tr className={header_color} >{this.renderTableHeader()}</tr>
