@@ -25,12 +25,11 @@ class ScheduleList extends Component {
             {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
           title: props.name ? props.name.charAt(0).toUpperCase() + props.name.slice(1): '',
-          class: props.classes,
-          item:[]
+          class: props.classes
       };
 
     }
-  
+
     // changes state color of the star and state font of the schedule Name
     changeColor() {
        this.setState(prevState => ({
@@ -42,14 +41,6 @@ class ScheduleList extends Component {
 
     handleChange(e) {
       this.setState({ title: e.target.value });
-    }
-
-
-    displayOnSchedule() {
-      if (this.state.class) {
-        console.log(this.state.class.timesOffered);
-
-      }
     }
 
     renderTableHeader() {
@@ -98,36 +89,32 @@ class ScheduleList extends Component {
 
       let icons_occupy = this.state.icon ? "icons_occupy" : "icons_allow";
 
-      //let src_icon = this.state.icon ? "star" : "star_icon";
+      return (
+        <div className='all_schedules'>
+          <div className='tableName' >
+            <input
+              className='input_text'
+              type="text"
+              value={title}
+              onChange={this.handleChange.bind(this)}
+              />
+            </div>
+          <table id='itemArray'>
+            <tbody>
+              <tr className={header_color} >{this.renderTableHeader()}</tr>
+              {this.renderTableData()}
+            </tbody>
+          </table>
 
-        return (
-          <div className='all_schedules'>
-            <div className='tableName' >
-              <input
-                className='input_text'
-                type="text"
-                value={title}
-                onChange={this.handleChange.bind(this)}
-                />
-              </div>
-            <table id='itemArray'>
-              <tbody>
-                <tr className={header_color} >{this.renderTableHeader()}</tr>
-                {this.renderTableData()}
-              </tbody>
-            </table>
+          <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
+            <img className={icons_occupy} src={email_icon} />
+          </a>
+          { !icon && <img className={icons_occupy} src={star_icon} onClick={this.changeColor.bind(this)}/> }
+          { icon && <img className={icons_occupy} src={star} onClick={this.changeColor.bind(this)}/> }
+          { !icon && <img className={icons_occupy} src={delete_icon} onClick={() => {delete_callback()}}/> }
 
-            {this.addClassToSchedule()}
-
-            <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
-              <img className={icons_occupy} src={email_icon} />
-            </a>
-            { !icon && <img className={icons_occupy} src={star_icon} onClick={this.changeColor.bind(this)}/> }
-            { icon && <img className={icons_occupy} src={star} onClick={this.changeColor.bind(this)}/> }
-            { !icon && <img className={icons_occupy} src={delete_icon} onClick={() => {delete_callback()}}/> }
-
-          </div>
-        );
+        </div>
+      );
     }
 }
 
