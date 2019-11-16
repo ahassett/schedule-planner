@@ -12,6 +12,7 @@ class ScheduleList extends Component {
 
       this.state = {
           color: true,
+          column: true,
           icon: false,
           itemArray: [
             {time: '8:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''},
@@ -25,7 +26,9 @@ class ScheduleList extends Component {
             {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}
           ],
           title: props.name ? props.name.charAt(0).toUpperCase() + props.name.slice(1): '',
-          class: props.classes
+          class: props.classes,
+          width: undefined,
+          col_contents: props.isEmpty
       };
 
     }
@@ -39,12 +42,24 @@ class ScheduleList extends Component {
 
     }
 
+    handleCRNS() {
+      console.log(this.props.classes);
+    }
+
     handleChange(e) {
       this.setState({ title: e.target.value });
+
+      let len = e.target.value.length;
+
+      // varies length of schedule name in the schedule
+      if (len < 27) {
+        this.setState({ width: len * 15 })
+      } else {
+        this.setState({ width: 27 * 15 })
+      }
     }
 
     renderTableHeader() {
-
       let header = Object.keys(this.state.itemArray[0])
       header.splice(0, 1);
       header.splice(0, 0, '');
@@ -55,16 +70,25 @@ class ScheduleList extends Component {
 
     // contents of the schedule-table
     renderTableData() {
+      let col_content
+
+      if (this.state.col_contents) {
+        col_content = "small_cols"
+      } else {
+        col_content = "large_cols"
+      }
+
       return this.state.itemArray.map((itemArray, index) => {
         const { time, Mon, Tues, Wed, Thurs, Fri } = itemArray // destructuring
+
         return (
-          <tr key={time.slice(0, time.search(/[:]/g))}>
-            <td>{time}</td>
-            <td>{Mon}</td>
-            <td>{Tues}</td>
-            <td>{Wed}</td>
-            <td>{Thurs}</td>
-            <td>{Fri}</td>
+          <tr className={col_content} key={time.slice(0, time.search(/[:]/g))}>
+            <td className={col_content}>{time}</td>
+            <td className={col_content}>{Mon}</td>
+            <td className={col_content}>{Tues}</td>
+            <td className={col_content}>{Wed}</td>
+            <td className={col_content}>{Thurs}</td>
+            <td className={col_content}>{Fri}</td>
           </tr>
         )
       })
@@ -74,9 +98,12 @@ class ScheduleList extends Component {
 
       if (props.classes !== state.class) {
         return {
-          itemArray: props.classes
+          itemArray: props.classes,
+          col_contents: props.isEmpty
+
         };
       }
+
       return null;
     }
 
@@ -84,6 +111,9 @@ class ScheduleList extends Component {
 
       const { delete_callback } = this.props;
       const { icon, title } = this.state;
+      const width_change = {
+        width: this.state.width ? this.state.width + 'px' : '140px'
+      }
 
       let header_color = this.state.color ? "beforeButton" : "afterButton";
 
@@ -96,22 +126,31 @@ class ScheduleList extends Component {
               className='input_text'
               type="text"
               value={title}
+              style={width_change}
               onChange={this.handleChange.bind(this)}
-              />
-            </div>
+            />
+
+            { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}}/> }
+            { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)}/> }
+            { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)}/> }
+            <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
+              <img className={'img_icon'} src={email_icon} />
+            </a>
+
+            { !this.state.col_contents && <input
+              className='input_CRNS'
+              type="text"
+              value="CRN's"
+              onClick={this.handleCRNS}
+            /> }
+
+          </div>
           <table id='itemArray'>
             <tbody>
               <tr className={header_color} >{this.renderTableHeader()}</tr>
               {this.renderTableData()}
             </tbody>
           </table>
-
-          <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
-            <img className={icons_occupy} src={email_icon} />
-          </a>
-          { !icon && <img className={icons_occupy} src={star_icon} onClick={this.changeColor.bind(this)}/> }
-          { icon && <img className={icons_occupy} src={star} onClick={this.changeColor.bind(this)}/> }
-          { !icon && <img className={icons_occupy} src={delete_icon} onClick={() => {delete_callback()}}/> }
 
         </div>
       );

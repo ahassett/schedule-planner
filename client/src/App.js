@@ -72,7 +72,7 @@ function populateSchedule(courses) {
           }
 
           day = item.slice(0, end)
-          course_time = time_str + ' ' +course_number
+          course_time = time_str + ' ' + course_number.replace(' ', '') + ' ' + 'PLACES' + ' ' + 'CRN0000'
 
           if (day === 'Mon') {
             mon = course_time
@@ -273,7 +273,8 @@ class App extends Component {
         dropDownMenu: [ 'Spring 2019', 'Fall 2019', 'Spring 2020'],
         searchedTerm: '',
         added_classes: [],
-        formatted_classes: []
+        formatted_classes: [],
+        scheduleEmpty: true
       };
 
       this.searchHandler = this.searchHandler.bind(this);
@@ -339,7 +340,6 @@ class App extends Component {
         removed.forEach(remove => {
           temp_list = temp_list.filter(item => item.title !== remove.title)
         })
-        console.log('aTrem', temp_list)
       }
 
       if (new_class) {
@@ -347,7 +347,8 @@ class App extends Component {
           temp_list.push(newClass)
         })
       }
-      console.log(temp_list);
+
+      this.setState({scheduleEmpty: !temp_list.length})
       this.setState({added_classes: temp_list})
       this.setState({formatted_classes: populateSchedule(temp_list)})
 
@@ -414,7 +415,7 @@ class App extends Component {
                 </div>
               </Router>
 
-              <div className='schedule' onScroll={this.handleScroll}>
+              <div className='schedule'>
 
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
 
@@ -422,7 +423,7 @@ class App extends Component {
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
                       list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} classes={this.state.formatted_classes} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item} key={item} classes={this.state.formatted_classes} delete_callback={this.handleDelete.bind(this, item)} name={item} isEmpty={this.state.scheduleEmpty}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
