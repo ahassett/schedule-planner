@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Toast } from 'react-bootstrap';
 
 import './ScheduleList.css';
 import star_icon from './star_icon.svg';
@@ -28,7 +29,8 @@ class ScheduleList extends Component {
           title: props.name ? props.name.charAt(0).toUpperCase() + props.name.slice(1): '',
           class: props.classes,
           width: undefined,
-          col_contents: props.isEmpty
+          col_contents: props.isEmpty,
+          show: false
       };
 
     }
@@ -43,7 +45,7 @@ class ScheduleList extends Component {
     }
 
     handleCRNS() {
-      console.log(this.props.classes);
+      this.setState({show: true})
     }
 
     handleChange(e) {
@@ -63,6 +65,9 @@ class ScheduleList extends Component {
       let header = Object.keys(this.state.itemArray[0])
       header.splice(0, 1);
       header.splice(0, 0, '');
+      header.splice(6, 1);
+      header.splice(6, 1);
+      console.log(header);
       return header.map((key, index) => {
         return <th key={index}>{key}</th>
       })
@@ -70,7 +75,8 @@ class ScheduleList extends Component {
 
     // contents of the schedule-table
     renderTableData() {
-      let col_content
+      let col_content, rand
+      let col_array = ['#ffc0cb', '#ffa500', '#00ffff', '#b300b3', '#228B22']
 
       if (this.state.col_contents) {
         col_content = "small_cols"
@@ -79,16 +85,41 @@ class ScheduleList extends Component {
       }
 
       return this.state.itemArray.map((itemArray, index) => {
-        const { time, Mon, Tues, Wed, Thurs, Fri } = itemArray // destructuring
+        const { time, Mon, Tues, Wed, Thurs, Fri, class_id } = itemArray // destructuring
+
+        let mon_color = '#ffffff', tues_color = '#ffffff', wed_color = '#ffffff', thurs_color = '#ffffff', fri_color = '#ffffff'
+
+        // use to fin color for each class
+        rand = Math.floor(Math.random() * 5)
+
+        if (Mon !== '') {
+          mon_color = col_array[class_id]
+        }
+
+        if (Tues !== '') {
+          tues_color = col_array[class_id]
+        }
+
+        if (Wed !== '') {
+          wed_color = col_array[class_id]
+        }
+
+        if (Thurs !== '') {
+          thurs_color = col_array[class_id]
+        }
+
+        if (Fri !== '') {
+          fri_color = col_array[class_id]
+        }
 
         return (
           <tr className={col_content} key={time.slice(0, time.search(/[:]/g))}>
             <td className={col_content}>{time}</td>
-            <td className={col_content}>{Mon}</td>
-            <td className={col_content}>{Tues}</td>
-            <td className={col_content}>{Wed}</td>
-            <td className={col_content}>{Thurs}</td>
-            <td className={col_content}>{Fri}</td>
+            <td style={{background: mon_color}} className={col_content}>{Mon}</td>
+            <td style={{background: tues_color}} className={col_content}>{Tues}</td>
+            <td style={{background: wed_color}} className={col_content}>{Wed}</td>
+            <td style={{background: thurs_color}} className={col_content}>{Thurs}</td>
+            <td style={{background: fri_color}} className={col_content}>{Fri}</td>
           </tr>
         )
       })
@@ -110,14 +141,12 @@ class ScheduleList extends Component {
     render() {
 
       const { delete_callback } = this.props;
-      const { icon, title } = this.state;
+      const { icon, title, show } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
 
       let header_color = this.state.color ? "beforeButton" : "afterButton";
-
-      let icons_occupy = this.state.icon ? "icons_occupy" : "icons_allow";
 
       return (
         <div className='all_schedules'>
@@ -138,11 +167,12 @@ class ScheduleList extends Component {
             </a>
 
             { !this.state.col_contents && <input
-              className='input_CRNS'
-              type="text"
-              value="CRN's"
-              onClick={this.handleCRNS}
-            /> }
+                className='input_CRNS'
+                type="button"
+                value="CRN's"
+                onClick={() => this.setState({show: true})}
+              />
+            }
 
           </div>
           <table id='itemArray'>
@@ -151,6 +181,32 @@ class ScheduleList extends Component {
               {this.renderTableData()}
             </tbody>
           </table>
+
+          <div id={'crn_toast'}>
+            { show &&
+              <Toast
+                onClose={() => this.setState({ show: false })}
+                show={show}>
+
+                  <Toast.Header>
+                    <strong className="mr-auto">Get your CRN's<br/>
+                    <small>Arrange CRN's before copying to clipboard</small>
+                    </strong>
+                  </Toast.Header>
+
+                  <Toast.Body>
+                    <p>CRN'S will be displayed here</p>
+
+                    <input
+                      id='order_CRNS'
+                      type="button"
+                      value="order and copy"
+                    />
+
+                  </Toast.Body>
+              </Toast>
+            }
+          </div>
 
         </div>
       );
