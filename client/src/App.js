@@ -23,10 +23,15 @@ import AdminPage from './components/Admin';
 import SignOutButton from './components/SignOut';
 
 import * as ROUTES from './constants/routes';
-import { withFirebase } from './database';
 
-const Navigation = ({ authUser }) => (
-    <div>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+import { withAuthentication } from './session';
+
+const Navigation = () => (
+    <div>
+       <AuthUserContext.Consumer>
+         {authUser => authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+       </AuthUserContext.Consumer>
+    </div>
 );
 
 const NavigationAuth = () => (
@@ -186,7 +191,6 @@ class App extends Component {
     super ()
 
     this.state = {
-        authUser: null,
         classes: [
           {
               id: uuid(),
@@ -343,21 +347,6 @@ class App extends Component {
 
     }
 
-    componentDidMount() {
-      this.listener = this.props.firebase.auth.onAuthStateChanged(
-        authUser => {
-            console.log(this.props.firebase.auth)
-          authUser
-            ? this.setState({ authUser })
-            : this.setState({ authUser: null });
-        },
-      );
-    }
-
-    componentWillUnmount(){
-        this.listener();
-    }
-
     // adds a new schedule when button is clicked
     createNewSchedule = () => {
 
@@ -477,21 +466,21 @@ class App extends Component {
 
               <h1>Course Catalog and Schedule</h1>
 
-              <Router>
-                <div>
-                  <Navigation authUser={this.state.authUser} />
-                  <hr />
+                  <Router>
+                    <div>
+                      <Navigation />
+                      <hr />
 
-                    <Route exact path={ROUTES.LANDING} component={LandingPage} />
-                    <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-                    <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-                    <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-                    <Route path={ROUTES.HOME} component={HomePage} />
-                    <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-                    <Route path={ROUTES.ADMIN} component={AdminPage} />
+                        <Route exact path={ROUTES.LANDING} component={LandingPage} />
+                        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+                        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+                        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+                        <Route path={ROUTES.HOME} component={HomePage} />
+                        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+                        <Route path={ROUTES.ADMIN} component={AdminPage} />
 
-                </div>
-              </Router>
+                    </div>
+                  </Router>
 
               <div className='schedule'>
 
@@ -545,4 +534,4 @@ class App extends Component {
     }
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);
