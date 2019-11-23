@@ -57,6 +57,130 @@ const NavigationNonAuth = () => (
     </ul>
 );
 
+
+function subtractTime(time_str){
+
+  let first = time_str.slice(0, time_str.indexOf(':'))
+  let second = time_str.slice(time_str.lastIndexOf(':') - 2, time_str.lastIndexOf(':')).replace(/-/gi, '')
+
+  let firstMins = time_str.slice(time_str.indexOf(':') + 1, time_str.indexOf(':') + 3)
+  let secondMins = time_str.slice(time_str.lastIndexOf(':') + 1, time_str.lastIndexOf(':') + 3)
+
+  first = parseInt(second) - parseInt(first)
+  firstMins = parseInt(secondMins) - parseInt(firstMins)
+
+  if (firstMins < 0){
+    first -= 1
+    firstMins = 60 + firstMins
+  }
+
+  first *= 60
+  first += firstMins
+
+  return first
+
+}
+
+function populateSchedule(courses) {
+  let prev_time = [0] // the zero jump starts the loop  below
+  let all_courses = []
+  let formatted = []
+  let slots = [
+    {time: '8:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '9:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '10:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '11:00 am', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '12:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '1:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '2:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '3:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''},
+    {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: '', hrs:''}
+  ]
+
+  courses.forEach((course, index) => {
+    let day_time = course.timesOffered
+    let course_number = course.title.substring(0, course.title.indexOf('-') -1)
+    let dash_loc, course_time, time_array = [], classId = index
+
+    while(day_time.includes('-')) {
+      dash_loc = day_time.indexOf('-')
+      time_array.push(day_time.substring(0, dash_loc + 10))
+      day_time = day_time.substring(dash_loc + 11)
+    }
+
+    time_array.forEach(time_item => {
+      let time = '', mon = '', tues = '', wed = '', thurs = '', fri = '', end = 0, hr = 0, day
+
+      time_item = time_item.replace(/ am/gi, '')
+      time_item = time_item.replace(/ pm/gi, '')
+
+      dash_loc = time_item.indexOf('-')
+
+      let time_str = time_item.substring(dash_loc - 6).replace(/ /gi, '')
+
+      hr = subtractTime(time_str)
+
+      let item_array = time_item.substring(0, dash_loc - 1).split(' ')
+
+      item_array.forEach(item => {
+
+        if (!parseInt(item.slice(0, 1))) {
+
+          if (item.slice(0, 1) === 'T') {
+            end = 4
+          } else {
+            end = 3
+          }
+
+          day = item.slice(0, end)
+          course_time = time_str + ' ' + course_number.replace(' ', '') + ' ' + 'PLACES' + ' ' + 'CRN0000'
+
+          if (day === 'Mon') {
+            mon = course_time
+          } else if (day === 'Tues') {
+            tues = course_time
+          } else if (day === 'Wed') {
+            wed = course_time
+          } else if (day === 'Thur') {
+            thurs = course_time
+          } else if (day === 'Fri') {
+            fri = course_time
+          }
+
+        } else {
+
+          let num = item.slice(0, item.indexOf(':'))
+
+          if (['8', '9', '10', '11'].includes(num)) {
+            time = item + ' am'
+          } else {
+            time = item + ' pm'
+          }
+        }
+      })
+      console.log({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr});
+      prev_time.forEach(previous => {
+        if (!prev_time.includes(time)) {
+          all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr})
+          prev_time.push(time)
+        }
+      })
+
+    })
+
+  })
+  console.log(all_courses);
+      slots.forEach(slot => {
+        if(prev_time.includes(slot.time)) {
+          formatted.push(all_courses.filter(item_course => item_course.time === slot.time).pop())
+        } else {
+          formatted.push(slot)
+        }
+      })
+  return formatted
+
+}
+
 class App extends Component {
   constructor() {
     super ()
@@ -99,7 +223,7 @@ class App extends Component {
               title: 'CSCI 0201 - Data Structures',
               description: 'In this course we will study the ideas and structures helpful in designing algorithms and writing programs for solving large, complex problems. The Java programming language and object-oriented paradigm are introduced in the context of important abstract data types (ADTs) such as stacks, queues, trees, and graphs. We will study efficient implementations of these ADTs, and learn classic algorithms to manipulate these structures for tasks such as sorting and searching. Prior programming experience is expected, but prior familiarity with the Java programming language is not assumed. (One CSCI course at the 0100-level) (Juniors and Seniors by waiver) 3 hrs. lect./lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
-              timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm, Friday 11:00 am - 12:15 pm',
               saved: false,
               added: false,
               locked: false
@@ -209,8 +333,12 @@ class App extends Component {
         button_position: false,
         show: false,
         dropDownMenu: [ 'Spring 2019', 'Fall 2019', 'Spring 2020'],
-        searchedTerm: ''
+        searchedTerm: '',
+        added_classes: [],
+        formatted_classes: [],
+        scheduleEmpty: true
       };
+
       this.searchHandler = this.searchHandler.bind(this);
 
     }
@@ -233,8 +361,6 @@ class App extends Component {
     // adds a new schedule when button is clicked
     createNewSchedule = () => {
 
-      console.log(this.state.button_position);
-
       let list = this.state.list_schedules.slice();
       let name = 'schedule_'.concat(this.state.list_schedules.length);
       list.push(name);
@@ -248,7 +374,6 @@ class App extends Component {
     }
 
     saveClass = (id) => {
-        console.log(id);
         this.setState({ classes: this.state.classes.map(classname => {
             if(classname.id === id){
                 classname.saved = !classname.saved
@@ -262,15 +387,51 @@ class App extends Component {
         })})
 
     }
+
     addClass = (id) => {
-        console.log(id);
-        this.setState({ classes: this.state.classes.map(classname => {
-            if(classname.id === id){
-                classname.added = !classname.added
+      let temp_list = [], removed = [], new_class = []; // have to be lists in case a class has a lab they will be added together
+
+      this.setState({ classes: this.state.classes.map(classname => {
+          if(classname.id === id){
+              classname.added = !classname.added
+          }
+
+          if (classname.added === true) {
+
+            if (!this.state.added_classes.includes(classname)){
+              new_class.push(classname)
             }
-            return classname;
-        })})
+
+          } else {
+
+            if (this.state.added_classes.includes(classname)){
+              removed.push(classname)
+            }
+
+          }
+          return classname;
+      })})
+
+      temp_list = this.state.added_classes.slice()
+
+      if (removed) {
+        removed.forEach(remove => {
+          temp_list = temp_list.filter(item => item.title !== remove.title)
+        })
+      }
+
+      if (new_class) {
+        new_class.forEach(newClass => {
+          temp_list.push(newClass)
+        })
+      }
+
+      this.setState({scheduleEmpty: !temp_list.length})
+      this.setState({added_classes: temp_list})
+      this.setState({formatted_classes: populateSchedule(temp_list)})
+
     }
+
     lockClass = (id) => {
         console.log(id);
         this.setState({ classes: this.state.classes.map(classname => {
@@ -308,7 +469,6 @@ class App extends Component {
     }
 
     render() {
-        //console.log(this.state.classes)
 
         const {list_schedules, button_position, show} = this.state;
 
@@ -333,7 +493,7 @@ class App extends Component {
                 </div>
               </Router>
 
-              <div className='schedule' onScroll={this.handleScroll}>
+              <div className='schedule'>
 
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
 
@@ -341,7 +501,7 @@ class App extends Component {
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
                       list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} classes={this.state.classes.filter((classname) => classname.saved === true)} delete_callback={this.handleDelete.bind(this, item)} name={item}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item} key={item} classes={this.state.formatted_classes} delete_callback={this.handleDelete.bind(this, item)} name={item} isEmpty={this.state.scheduleEmpty}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
