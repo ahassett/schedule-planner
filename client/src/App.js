@@ -10,8 +10,8 @@ import uuid from 'uuid';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navigation from './components/Navigation';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+//import Navigation from './components/Navigation';
 import LandingPage from './components/Landing';
 import SignUpPage from './components/SignUp';
 import SignInPage from './components/SignIn';
@@ -20,7 +20,42 @@ import HomePage from './components/Home';
 import AccountPage from './components/Account';
 import AdminPage from './components/Admin';
 
+import SignOutButton from './components/SignOut';
+
 import * as ROUTES from './constants/routes';
+import { withFirebase } from './database';
+
+const Navigation = ({ authUser }) => (
+    <div>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+);
+
+const NavigationAuth = () => (
+    <ul>
+        <li>
+            <Link to={ROUTES.LANDING}>Landing</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.HOME}>Home</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.ACCOUNT}>Account</Link>
+        </li>
+        <li>
+          <SignOutButton />
+        </li>
+    </ul>
+);
+
+const NavigationNonAuth = () => (
+    <ul>
+        <li>
+            <Link to={ROUTES.LANDING}>Landing</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+        </li>
+    </ul>
+);
 
 
 function subtractTime(time_str){
@@ -151,6 +186,7 @@ class App extends Component {
     super ()
 
     this.state = {
+        authUser: null,
         classes: [
           {
               id: uuid(),
@@ -307,6 +343,21 @@ class App extends Component {
 
     }
 
+    componentDidMount() {
+      this.listener = this.props.firebase.auth.onAuthStateChanged(
+        authUser => {
+            console.log(this.props.firebase.auth)
+          authUser
+            ? this.setState({ authUser })
+            : this.setState({ authUser: null });
+        },
+      );
+    }
+
+    componentWillUnmount(){
+        this.listener();
+    }
+
     // adds a new schedule when button is clicked
     createNewSchedule = () => {
 
@@ -428,7 +479,7 @@ class App extends Component {
 
               <Router>
                 <div>
-                  <Navigation />
+                  <Navigation authUser={this.state.authUser} />
                   <hr />
 
                     <Route exact path={ROUTES.LANDING} component={LandingPage} />
@@ -494,4 +545,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withFirebase(App);
