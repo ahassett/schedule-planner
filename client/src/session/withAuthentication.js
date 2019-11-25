@@ -1,5 +1,5 @@
-import React, Component from 'react';
-import { AuthUserContext } from './context';
+import React, { Component } from 'react';
+import AuthUserContext from './context';
 import { withFirebase } from '../database';
 
 const withAuthentication = Component => {
