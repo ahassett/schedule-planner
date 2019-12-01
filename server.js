@@ -62,32 +62,48 @@ app.get('/express_backend', (req, res) => {
                         })
                         $('.coursedesc p').each((index, value) => {
 
-                            const item = $(value).text().split('\n')
 
-                            if (item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) {
-                                itemString = item[0]
-                                termsOfferedArray.push(itemString)
-                            } else if (item.length > 1) {
-                                if ( !item[0].includes('More Information >>'))
-                                itemString = item[1]
-                                descriptionArray.push(itemString)
-                            } else {
+                            const item = $(value).text().split('\n')
+                            //console.log(item[0])
+
+                            // extract term description
+                            if ((item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) && !item[0].includes('.')) {
+                                termsOfferedArray.push(item[0])
+                            }
+                            else {
                                 console.log(item)
                             }
+
+                            //
+                            // if (item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) {
+                            //     itemString = item[0]
+                            //     termsOfferedArray.push(itemString)
+                            // } else if (item.length > 1) {
+                            //     if ( !item[0].includes('More Information >>'))
+                            //     itemString = item[1]
+                            //     descriptionArray.push(itemString)
+                            // } else {
+                            //     //console.log(item)
+                            // }
                         })
-                        console.log(termsOfferedArray.length)
-                        console.log(descriptionArray.length)
-                        console.log(classnameArray.length)
+                        console.log('term offered: ' + termsOfferedArray.length)
+                    //    console.log(descriptionArray.length)
+                        console.log('class offered: '+ classnameArray.length)
+
+                        if (classnameArray.length != termsOfferedArray.length){
+                            console.log(classnameArray)
+                            console.log(termsOfferedArray)
+                        }
 
                         // store everything in json object
-                        for (let i = 0; i < termsOfferedArray.length; i++) {
-                            dict.push({
-                                department : department,
-                                classname: classnameArray[i],
-                                description: descriptionArray[i],
-                                termsOffered: termsOfferedArray[i]
-                            })
-                        }
+                        // for (let i = 0; i < termsOfferedArray.length; i++) {
+                        //     dict.push({
+                        //         department : department,
+                        //         classname: classnameArray[i],
+                        //         description: descriptionArray[i],
+                        //         termsOffered: termsOfferedArray[i]
+                        //     })
+                        // }
                         //console.log(dict)
 
 
