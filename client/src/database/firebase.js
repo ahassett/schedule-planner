@@ -1,10 +1,11 @@
 import app from 'firebase/app';
 import 'firebase/auth'; // implement the authentication API
+import 'firebase/database'; // implement the database API
 
 //   apiKey: process.env.REACT_APP_API_KEY,
 
 const config = {
-  apiKey: 'AIzaSyBbHIT3RJRFG95doFIrj0_or5IClHs-HVg',
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATABASE_URL,
   projectId: process.env.REACT_APP_PROJECT_ID,
@@ -19,6 +20,7 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+    this.db = app.database();
   }
 
   // authentication API
@@ -34,6 +36,11 @@ class Firebase {
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+
+  // user API
+
+  user = uid => this.db.ref(`users/${uid}`); // specific user
+  users = () => this.db.ref('users'); // all users
 }
 
 export default Firebase;
