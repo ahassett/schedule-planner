@@ -66,12 +66,12 @@ app.get('/express_backend', (req, res) => {
                             const item = $(value).text().split('\n')
                             //console.log(item[0])
 
-                            // extract term description
+                            // extract term
                             if ((item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) && !item[0].includes('.')) {
                                 termsOfferedArray.push(item[0])
                             }
-                            else {
-                                console.log(item)
+                            else if (!item[0].includes('More Information ')) { // extract course description
+                                    descriptionArray.push(item[item.length-1])
                             }
 
                             //
@@ -87,13 +87,18 @@ app.get('/express_backend', (req, res) => {
                             // }
                         })
                         console.log('term offered: ' + termsOfferedArray.length)
-                    //    console.log(descriptionArray.length)
+                        console.log('description offered: ' + descriptionArray.length)
                         console.log('class offered: '+ classnameArray.length)
-
-                        if (classnameArray.length != termsOfferedArray.length){
-                            console.log(classnameArray)
+                        //
+                        if (descriptionArray.length != termsOfferedArray.length){
+                            console.log(descriptionArray)
                             console.log(termsOfferedArray)
                         }
+                        if (classnameArray.length != termsOfferedArray.length){
+                            console.log(descriptionArray)
+                            console.log(termsOfferedArray)
+                        }
+
 
                         // store everything in json object
                         // for (let i = 0; i < termsOfferedArray.length; i++) {
