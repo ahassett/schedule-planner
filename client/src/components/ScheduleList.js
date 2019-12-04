@@ -64,7 +64,9 @@ class ScheduleList extends Component {
           width: undefined,
           col_contents: props.isEmpty,
           show: false,
-          all_crn: []
+          all_crn: [],
+          details: false,
+          coord: []
       };
 
     }
@@ -93,6 +95,10 @@ class ScheduleList extends Component {
       } else {
         this.setState({ width: 27 * 15 })
       }
+    }
+    handleDetails(event) {
+      this.setState({ details: true})
+      this.setState({ coord: [event.ClientX, event.ClientY]})
     }
 
     renderTableHeader() {
@@ -275,7 +281,7 @@ class ScheduleList extends Component {
         return (
           <tr className={col_content} key={time.slice(0, time.search(/[:]/g))}>
             <td className={col_content}>{time}</td>
-            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content}>{Mon}</td>
+            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content} onClick={this.handleDetails}>{Mon}</td>
             <td style={{background: `linear-gradient(to bottom, ${tues_color1} ${hr_percent.Tues.first}, ${tues_color} ${hr_percent.Tues.first} ${hr_percent.Tues.second},${tues_color2} ${hr_percent.Tues.second} )`}} className={col_content}>{Tues}</td>
             <td style={{background: `linear-gradient(to bottom, ${wed_color1} ${hr_percent.Wed.first}, ${wed_color} ${hr_percent.Wed.first} ${hr_percent.Wed.second}, ${wed_color2} ${hr_percent.Wed.second} )`}} className={col_content}>{Wed}</td>
             <td style={{background: `linear-gradient(to bottom, ${thurs_color1} ${hr_percent.Thurs.first}, ${thurs_color} ${hr_percent.Thurs.first} ${hr_percent.Thurs.second}, ${thurs_color2} ${hr_percent.Thurs.second} )`}} className={col_content}>{Thurs}</td>
@@ -301,7 +307,7 @@ class ScheduleList extends Component {
     render() {
 
       const { delete_callback } = this.props;
-      const { all_crn, icon, title, show } = this.state;
+      const { all_crn, details, icon, title, show } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
@@ -385,6 +391,35 @@ class ScheduleList extends Component {
             { show &&
               <Toast
                 onClose={() => this.setState({ show: false })}
+                show={show}>
+
+                  <Toast.Header>
+                    <strong className="mr-auto">Get your CRN's<br/>
+                    <small>Arrange CRN's before copying to clipboard</small>
+                    </strong>
+                  </Toast.Header>
+
+                  <Toast.Body>
+                    {temp_crn.toString()}
+
+                    <CopyToClipboard text={temp_crn.toString()}
+                      onCopy={() => this.setState({show: false})}>
+                      <input
+                        id='order_CRNS'
+                        type="button"
+                        value="copy"
+                      />
+                    </CopyToClipboard>
+
+                  </Toast.Body>
+              </Toast>
+            }
+          </div>
+
+          <div id={'details_toast'}>
+            { details &&
+              <Toast
+                onClose={() => this.setState({ details: false })}
                 show={show}>
 
                   <Toast.Header>

@@ -204,21 +204,11 @@ function populateSchedule(courses) {
 
                 // we don't need to deal with the rest of the items in a course object
 
-              } else {
-                // if (checkList.includes(filter)) {
-                //   console.log(filter);
-                //   console.log(filtered[filter]);
-                //   let con1 = filtered[filter].split(' ')
-                //   let con2 = newclass.split(' ')
-                //   result = [con1[1], con2[1]]
-                // }
               }
 
               Object.keys(filtered).filter(key => filtered[key] !== '').forEach(itemkey => {
                 check.forEach(itemcheck => {
                   if (itemkey === itemcheck && filtered[itemkey] !== newclass) {
-                    console.log(itemkey);
-                    console.log(filtered[itemkey]);
                     let con1 = filtered[itemkey].split(' ')
                     let con2 = newclass.split(' ')
                     result = [con1[1], con2[1]]
@@ -272,22 +262,9 @@ function populateSchedule(courses) {
 
       })
 
-      // prev_time.forEach(previous => {
-      //   if (!prev_time.includes(time)) {
-      //     all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr, mins: min})
-      //     prev_time.push(time)
-      //   }
-      // })
-
     })
 
   });
-
-  // if (prev_time[0] === 0) {
-  //   prev_time = prev_time.filter(i => i !== 0)
-  // }
-
-  // prev_time = prev_time.map(prev => prev.slice(0, prev.indexOf(':')))
 
   let transit;
 
