@@ -65,6 +65,7 @@ function populateSchedule(courses) {
     {time: '3:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, hrs: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, mins: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}},
     {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, hrs: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, mins: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}}
   ]
+  let result
 
   courses.forEach((course, index) => {
     let day_time = course.timesOffered
@@ -131,60 +132,103 @@ function populateSchedule(courses) {
 
       // checks time conflict
       prev_time.forEach(previous => {
+        let loop = false;
+
+        let checkList = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri'], newclass, check = [];
+        [mon, tues, wed, thurs, fri].filter((item, index) => {
+          if (item !== '') {
+            check.push(checkList[index])
+            newclass = item
+          }
+        })
+
 
         // if there s a time conflict check if classes also have a conflict, if not merge classes
-        // console.log(prev_time);
         if (prev_time.includes(time.slice(0, time.indexOf(':')))) {
 
           let filtered = (all_courses.filter(acourse => acourse.time.slice(0, acourse.time.indexOf(':')) === time.slice(0, time.indexOf(':'))))[0]
-          console.log('fil', filtered);
-          Object.keys(filtered).forEach(filter => {
-            console.log('filtere', filter);
-            // if merging the two objects with same time if there is no conflict in days offered
-            // for each add class-id, hrs and mins of the new courses in the object
 
-            if (filtered[filter] === ''){
+          // let tempKeys = Object.keys(filtered).filter(key => filtered[key] !== '')
+          //
+          // tempKeys.forEach(itemkey => {
+          //   check.forEach(itemcheck => {
+          //     if (itemkey === itemcheck) {
+          //       loop = true
+          //     }
+          //   })
+          // })
+          //
+          // if (!loop) {
 
-              if (filter === 'Mon' && mon !== '') {
+            Object.keys(filtered).forEach(filter => {
+              // if merging the two objects with same time if there is no conflict in days offered
+              // for each add class-id, hrs and mins of the new courses in the object  //
 
-                filtered[filter] = mon
-                filtered.class_id = {...filtered.class_id, Mon: classId}
-                filtered.hrs = {...filtered.hrs, Mon: hr}
-                filtered.mins = {...filtered.mins, Mon: min}
+              if (filtered[filter] === ''){
 
-              } else if (filter === 'Tues' && tues !== '') {
+                if (filter === 'Mon' && mon !== '' && check.includes(filter)) {
 
-                filtered[filter] = tues
-                filtered.class_id = {...filtered.class_id, Tues: classId}
-                filtered.hrs = {...filtered.hrs, Tues: hr}
-                filtered.mins = {...filtered.mins, Tues: min}
+                  filtered[filter] = mon
+                  filtered.class_id = {...filtered.class_id, Mon: classId}
+                  filtered.hrs = {...filtered.hrs, Mon: hr}
+                  filtered.mins = {...filtered.mins, Mon: min}
 
-              } else if (filter === 'Wed' && wed !== '') {
+                } else if (filter === 'Tues' && tues !== '' && check.includes(filter)) {
 
-                filtered[filter] = wed
-                filtered.class_id = {...filtered.class_id, Wed: classId}
-                filtered.hrs = {...filtered.hrs, Wed: hr}
-                filtered.mins = {...filtered.mins, Wed: min}
+                  filtered[filter] = tues
+                  filtered.class_id = {...filtered.class_id, Tues: classId}
+                  filtered.hrs = {...filtered.hrs, Tues: hr}
+                  filtered.mins = {...filtered.mins, Tues: min}
 
-              } else if (filter === 'Thurs' && thurs !== '') {
+                } else if (filter === 'Wed' && wed !== '' && check.includes(filter)) {
 
-                filtered[filter] = thurs
-                filtered.class_id = {...filtered.class_id, Thurs: classId}
-                filtered.hrs = {...filtered.hrs, Thurs: hr}
-                filtered.mins = {...filtered.mins, Thurs: min}
+                  filtered[filter] = wed
+                  filtered.class_id = {...filtered.class_id, Wed: classId}
+                  filtered.hrs = {...filtered.hrs, Wed: hr}
+                  filtered.mins = {...filtered.mins, Wed: min}
 
-              } else if (filter === 'Fri' && fri !== '') {
+                } else if (filter === 'Thurs' && thurs !== '' && check.includes(filter)) {
 
-                filtered[filter] = fri
-                filtered.class_id = {...filtered.class_id, Fri: classId}
-                filtered.hrs = {...filtered.hrs, Fri: hr}
-                filtered.mins = {...filtered.mins, Fri: min}
+                  filtered[filter] = thurs
+                  filtered.class_id = {...filtered.class_id, Thurs: classId}
+                  filtered.hrs = {...filtered.hrs, Thurs: hr}
+                  filtered.mins = {...filtered.mins, Thurs: min}
+
+                } else if (filter === 'Fri' && fri !== '' && check.includes(filter)) {
+
+                  filtered[filter] = fri
+                  filtered.class_id = {...filtered.class_id, Fri: classId}
+                  filtered.hrs = {...filtered.hrs, Fri: hr}
+                  filtered.mins = {...filtered.mins, Fri: min}
+                }
+
+                // we don't need to deal with the rest of the items in a course object
+
+              } else {
+                // if (checkList.includes(filter)) {
+                //   console.log(filter);
+                //   console.log(filtered[filter]);
+                //   let con1 = filtered[filter].split(' ')
+                //   let con2 = newclass.split(' ')
+                //   result = [con1[1], con2[1]]
+                // }
               }
 
-              // we don't need to deal with the rest of the items in a course object
+              Object.keys(filtered).filter(key => filtered[key] !== '').forEach(itemkey => {
+                check.forEach(itemcheck => {
+                  if (itemkey === itemcheck && filtered[itemkey] !== newclass) {
+                    console.log(itemkey);
+                    console.log(filtered[itemkey]);
+                    let con1 = filtered[itemkey].split(' ')
+                    let con2 = newclass.split(' ')
+                    result = [con1[1], con2[1]]
+                  }
+                })
+              })
 
-            }
-          })
+            })
+        //  }
+
         } else {
 
           let id = {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''};
@@ -257,7 +301,12 @@ function populateSchedule(courses) {
     }
   })
 
-  return formatted
+  if (result) {
+    return [formatted, result]
+  } else {
+    return formatted
+  }
+
 
 }
 
@@ -411,6 +460,8 @@ class App extends Component {
         list_schedules: [],
         button_position: false,
         show: false,
+        showConflict: false,
+        alert: [],
         dropDownMenu: [ 'Spring 2019', 'Fall 2019', 'Spring 2020'],
         searchedTerm: '',
         added_classes: [],
@@ -490,9 +541,19 @@ class App extends Component {
         })
       }
 
+      let populate = populateSchedule(temp_list)
+
+      if (populate.length == 2) {
+        let popped = populate.pop()
+        populate = populate[0]
+        this.setState({showConflict: true})
+        this.setState({alert: popped})
+        console.log("conflict", populate);
+      }
+
       this.setState({scheduleEmpty: !temp_list.length})
       this.setState({added_classes: temp_list})
-      this.setState({formatted_classes: populateSchedule(temp_list)})
+      this.setState({formatted_classes: populate})
 
     }
 
@@ -534,7 +595,7 @@ class App extends Component {
 
     render() {
 
-        const {list_schedules, button_position, show} = this.state;
+        const {alert, list_schedules, button_position, show, showConflict} = this.state;
 
         return (
           <div className="App">
@@ -578,7 +639,18 @@ class App extends Component {
 
               </div>
 
+
               <div className='catalog'>
+                <div className="div_toastConflict">
+                    { showConflict && <Toast onClose={() => this.setState({ showConflict: false })}>
+                    <Toast.Header>
+                      <strong className="mr-auto">Conflict Alert<br/>
+                      <strong>Schedule 0 has a conflict!</strong>
+                      </strong>
+                    </Toast.Header>
+                      <Toast.Body>{alert[1]} conflicts with {alert[0]}; remove {alert[0]} to view the newly added course</Toast.Body>
+                    </Toast> }
+                </div>
 
                   <Form inline className="sticky" style={{position:'absolute', top:'10px', right:'150px'}}>
                     <FormControl onChange={this.searchHandler} value={this.state.searchedTerm} type="text" placeholder="Search" className=" mr-sm-2" />

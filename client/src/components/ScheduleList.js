@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Toast } from 'react-bootstrap';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import './ScheduleList.css';
 import star_icon from './star_icon.svg';
@@ -62,7 +63,8 @@ class ScheduleList extends Component {
           class: props.classes,
           width: undefined,
           col_contents: props.isEmpty,
-          show: false
+          show: false,
+          all_crn: []
       };
 
     }
@@ -105,6 +107,9 @@ class ScheduleList extends Component {
 
     // contents of the schedule-table
     renderTableData() {
+
+      const { all_crn } = this.state
+
       let col_content, pasthrs = {Mon: 0, Tues: 0, Wed: 0, Thurs: 0, Fri: 0}, hr_percent = {Mon: 0, Tues: 0, Wed: 0, Thurs: 0, Fri: 0}
       let col_array = ['#ffc0cb', '#4287f5', '#a337e6', '#d82feb', '#ed5170', '#ffa500', '#00ffff', '#b300b3', '#228B22']
       let past_classId = {Mon: 0, Tues: 0, Wed: 0, Thurs: 0, Fri: 0}
@@ -123,6 +128,7 @@ class ScheduleList extends Component {
         let mon_color2 = '#ffffff', tues_color2 = '#ffffff', wed_color2 = '#ffffff', thurs_color2 = '#ffffff', fri_color2 = '#ffffff'
 
         if (Mon !== '') {
+
           if (pasthrs.Mon !== 0) {
             mon_color1 = col_array[past_classId.Mon]
             mon_color2 = col_array[class_id.Mon]
@@ -150,6 +156,7 @@ class ScheduleList extends Component {
         }
 
         if (Tues !== '') {
+
           if (pasthrs.Tues !== 0) {
             tues_color1 = col_array[past_classId.Tues]
             tues_color2 = col_array[class_id.Tues]
@@ -179,6 +186,7 @@ class ScheduleList extends Component {
         }
 
         if (Wed !== '') {
+
           if (pasthrs.Wed!== 0) {
             wed_color1 = col_array[past_classId.Wed]
             wed_color2 = col_array[class_id.Wed]
@@ -207,6 +215,7 @@ class ScheduleList extends Component {
         }
 
         if (Thurs !== '') {
+
           if (pasthrs.Thurs !== 0) {
             thurs_color1 = col_array[past_classId.Thurs]
             thurs_color2 = col_array[class_id.Thurs]
@@ -236,6 +245,7 @@ class ScheduleList extends Component {
         }
 
         if (Fri !== '') {
+
           if (pasthrs.Fri !== 0) {
             fri_color1 = col_array[past_classId.Fri]
             fri_color2 = col_array[class_id.Fri]
@@ -291,12 +301,51 @@ class ScheduleList extends Component {
     render() {
 
       const { delete_callback } = this.props;
-      const { icon, title, show } = this.state;
+      const { all_crn, icon, title, show } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
 
-      let header_color = this.state.color ? "beforeButton" : "afterButton";
+      let header_color = this.state.color ? "beforeButton" : "afterButton"
+      let temp_crn = [], raw_crn
+
+      this.state.itemArray.map((itemArray, index) => {
+        const { time, Mon, Tues, Wed, Thurs, Fri, class_id, hrs, mins } = itemArray // destructuring
+
+        if (Mon !== '') {
+          raw_crn = Mon.split(' ')
+          temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+        }
+
+        if (Tues !== '') {
+          raw_crn = Tues.split(' ')
+          temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+        }
+
+        if (Wed !== '') {
+          raw_crn = Wed.split(' ')
+          temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+        }
+
+        if (Thurs !== '') {
+          raw_crn = Thurs.split(' ')
+          temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+        }
+
+        if (Fri !== '') {
+          raw_crn = Fri.split(' ')
+          temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+        }
+
+      })
+
+      temp_crn = [...new Set(temp_crn)]
+
+      // temp_crn.map(crn => {
+      //   return (
+      //     <small>{crn}<br/></small>
+      //   );
+      // })
 
       return (
         <div className='all_schedules'>
@@ -345,13 +394,16 @@ class ScheduleList extends Component {
                   </Toast.Header>
 
                   <Toast.Body>
-                    <p>CRN'S will be displayed here</p>
+                    {temp_crn.toString()}
 
-                    <input
-                      id='order_CRNS'
-                      type="button"
-                      value="order and copy"
-                    />
+                    <CopyToClipboard text={temp_crn.toString()}
+                      onCopy={() => this.setState({show: false})}>
+                      <input
+                        id='order_CRNS'
+                        type="button"
+                        value="copy"
+                      />
+                    </CopyToClipboard>
 
                   </Toast.Body>
               </Toast>

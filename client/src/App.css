@@ -15,6 +15,13 @@ h1 {
     width: 45%;
 }
 
+.div_toastConflict {
+  z-index: 1;
+  position: fixed;
+  top: 300px;
+  width: 45%;
+}
+
 .App {
     text-align: left;
 }
