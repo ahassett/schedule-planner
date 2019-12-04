@@ -63,8 +63,8 @@ class SavedItem extends Component {
 
                         <img src={this.getLockedSrc()} onClick={this.props.lockClass.bind(this, id)} className="dropIcon" width='30px' height='30px' style={{position:'absolute', left:'635px', top:'10px'}}/>
 
-                        <div className="dropdown">
-                          <img src={this.getAddedSrc()} onClick={this.handleAdd} className={ this.getAddedStyle() } className="dropIcon" width='30px' height='30px' style ={{position:'absolute', left:'670px', top:'10px'}}/>
+                        <div className="dropdown" style ={{position:'absolute', left:'670px', top:'10px', zIindex: '1'}}>
+                          <img src={this.getAddedSrc()} onClick={this.handleAdd} className={ this.getAddedStyle() } className="dropIcon" width='30px' height='30px'/>
                           <div id="myDropdown" className="dropdown-content"  style={{display: displayValue}}>
                             <a href="#" onClick={() => this.setState({displayValue: 'none'})}>Schedules</a>
                             <a href="#" onClick={() => this.setState({displayValue: 'none'})}>Schedules1</a>
