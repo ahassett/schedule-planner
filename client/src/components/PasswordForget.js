@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../database';
 import * as ROUTES from '../constants/routes';
+import { SignInLink } from './SignIn';
+import { SignUpLink } from './SignUp';
+import { Form, Button, Card } from 'react-bootstrap';
+
+import AppLogo from './logo.png';
 
 const PasswordForgetPage = () => (
   <div>
-    <h1>PasswordForget</h1>
     <PasswordForgetForm />
   </div>
 );
@@ -37,6 +41,11 @@ class PasswordForgetFormBase extends Component {
     const { email, error } = this.state;
     const isInvalid = email === '';
     return (
+        <div>
+
+            <div>
+                <img src={AppLogo} width='500px' height='500px' style={{position:'absolute', left:'365px', top:'80px'}}/>
+            </div>
       <form onSubmit={this.onSubmit}>
         <input
           name="email"
@@ -50,6 +59,27 @@ class PasswordForgetFormBase extends Component {
         </button>
         {error && <p>{error.message}</p>}
       </form>
+
+      <Card border="primary" text="black" style={{ padding:'65px', width: '35rem', top:'90px', left:'880px' }}>
+        <Card.Body>
+          <Card.Title style={{ fontSize: '40px' }}>Reset Password</Card.Title>
+          <Card.Text>
+              <Form onSubmit={this.onSubmit}>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label></Form.Label>
+                  <Form.Control name="email" value={this.state.email} onChange={this.onChange} type="text" placeholder="Email Address" />
+                </Form.Group>
+
+                <Button variant="primary" type="submit" disabled={isInvalid} block>
+                  Send Reset Link
+                </Button>
+                {error && <p>{error.message}</p>}
+                <SignInLink/>
+              </Form>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </div>
     );
   }
 }
