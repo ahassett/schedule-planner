@@ -22,9 +22,6 @@ app.get('/express_backend', (req, res) => {
 
     url = 'http://www.middlebury.edu/academics/catalog/depts'
 
-    // NOTE: structure of request call
-    // param 1 - url
-    // param 2 - callback function w error, repsose status, and html
     request(url, function (error, response, html) {
         if (!error){
             let $ = cheerio.load(html);
@@ -71,45 +68,42 @@ app.get('/express_backend', (req, res) => {
                                 termsOfferedArray.push(item[0])
                             }
                             else if (!item[0].includes('More Information ')) { // extract course description
-                                    descriptionArray.push(item[item.length-1])
+                                    //console.log(item)
+                                    //console.log(item.length)
+
+                                    if (item[item.length-1].includes('     ')) {
+                                        descriptionArray.push(item[item.length-2])
+                                    } else {
+                                        descriptionArray.push(item[item.length-1])
+                                    }
                             }
 
-                            //
-                            // if (item[0].includes('Fall 20') || item[0].includes('Spring 20') || item[0].includes('Winter 20') && item.length == 1) {
-                            //     itemString = item[0]
-                            //     termsOfferedArray.push(itemString)
-                            // } else if (item.length > 1) {
-                            //     if ( !item[0].includes('More Information >>'))
-                            //     itemString = item[1]
-                            //     descriptionArray.push(itemString)
-                            // } else {
-                            //     //console.log(item)
-                            // }
                         })
-                        console.log('term offered: ' + termsOfferedArray.length)
-                        console.log('description offered: ' + descriptionArray.length)
-                        console.log('class offered: '+ classnameArray.length)
+                        // console.log('term offered: ' + termsOfferedArray.length)
+                        // console.log('description offered: ' + descriptionArray.length)
+                        // console.log('class offered: '+ classnameArray.length)
                         //
-                        if (descriptionArray.length != termsOfferedArray.length){
-                            console.log(descriptionArray)
-                            console.log(termsOfferedArray)
-                        }
-                        if (classnameArray.length != termsOfferedArray.length){
-                            console.log(descriptionArray)
-                            console.log(termsOfferedArray)
-                        }
-
+                        // if (descriptionArray.length != termsOfferedArray.length){
+                        //     console.log(descriptionArray)
+                        //     console.log(termsOfferedArray)
+                        // }
+                        // if (classnameArray.length != termsOfferedArray.length){
+                        //     console.log(descriptionArray)
+                        //     console.log(termsOfferedArray)
+                        // }
 
                         // store everything in json object
-                        // for (let i = 0; i < termsOfferedArray.length; i++) {
-                        //     dict.push({
-                        //         department : department,
-                        //         classname: classnameArray[i],
-                        //         description: descriptionArray[i],
-                        //         termsOffered: termsOfferedArray[i]
-                        //     })
-                        // }
-                        //console.log(dict)
+                        for (let i = 0; i < termsOfferedArray.length; i++) {
+                            dict.push({
+                                department : department,
+                                classname: classnameArray[i],
+                                description: descriptionArray[i],
+                                termsOffered: termsOfferedArray[i]
+                            })
+                        }
+                       console.log(dict)
+
+
 
 
                             // item contains both description and term termsOffered
@@ -129,7 +123,7 @@ app.get('/express_backend', (req, res) => {
                                     res.set(dict);
                 })
             })
-            console.log(dict)
+        //    console.log(dict)
             // res.send(dict);
     }})
 });
