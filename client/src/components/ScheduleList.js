@@ -411,7 +411,7 @@ class ScheduleList extends Component {
 
                   <Toast.Header>
                     <strong className="mr-auto">Get your CRN's<br/>
-                    <small>Arrange CRN's before copying to clipboard</small>
+                    <small>Click button to copy to clipboard</small>
                     </strong>
                   </Toast.Header>
 
@@ -440,7 +440,7 @@ class ScheduleList extends Component {
 
                   <Toast.Header>
                     <strong className="mr-auto">Get your CRN's<br/>
-                    <small>Arrange CRN's before copying to clipboard</small>
+                    <small>Click button to copy to clipboard</small>
                     </strong>
                   </Toast.Header>
 
