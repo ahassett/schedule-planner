@@ -7,6 +7,8 @@ import star_icon from './star_icon.svg';
 import star from './star.svg';
 import email_icon from './email_icon.svg';
 import delete_icon from './delete_icon.svg';
+import pin_icon from './pin.svg';
+
 
 function convertHrs(pasthrs, hrs, mins) {
   //let temp_mins = mins
@@ -66,7 +68,8 @@ class ScheduleList extends Component {
           show: false,
           all_crn: [],
           details: false,
-          coord: []
+          coord: [0, 0],
+          showSave: false
       };
 
     }
@@ -84,8 +87,13 @@ class ScheduleList extends Component {
       this.setState({show: true})
     }
 
+    handleSave() {
+      this.props.nameCallback(this.state.title)
+      this.setState({ showSave: false });
+    }
+
     handleChange(e) {
-      this.setState({ title: e.target.value });
+      this.setState({ title: e.target.value, showSave: true });
 
       let len = e.target.value.length;
 
@@ -97,8 +105,9 @@ class ScheduleList extends Component {
       }
     }
     handleDetails(event) {
-      this.setState({ details: true})
       this.setState({ coord: [event.ClientX, event.ClientY]})
+      this.setState({ details: true})
+      console.log([event.ClientX, event.ClientY]);
     }
 
     renderTableHeader() {
@@ -281,7 +290,7 @@ class ScheduleList extends Component {
         return (
           <tr className={col_content} key={time.slice(0, time.search(/[:]/g))}>
             <td className={col_content}>{time}</td>
-            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content} onClick={this.handleDetails}>{Mon}</td>
+            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this)}>{Mon}</td>
             <td style={{background: `linear-gradient(to bottom, ${tues_color1} ${hr_percent.Tues.first}, ${tues_color} ${hr_percent.Tues.first} ${hr_percent.Tues.second},${tues_color2} ${hr_percent.Tues.second} )`}} className={col_content}>{Tues}</td>
             <td style={{background: `linear-gradient(to bottom, ${wed_color1} ${hr_percent.Wed.first}, ${wed_color} ${hr_percent.Wed.first} ${hr_percent.Wed.second}, ${wed_color2} ${hr_percent.Wed.second} )`}} className={col_content}>{Wed}</td>
             <td style={{background: `linear-gradient(to bottom, ${thurs_color1} ${hr_percent.Thurs.first}, ${thurs_color} ${hr_percent.Thurs.first} ${hr_percent.Thurs.second}, ${thurs_color2} ${hr_percent.Thurs.second} )`}} className={col_content}>{Thurs}</td>
@@ -305,53 +314,60 @@ class ScheduleList extends Component {
     }
 
     render() {
+      console.log(this.props.classes);
 
       const { delete_callback } = this.props;
-      const { all_crn, details, icon, title, show } = this.state;
+      const { all_crn, coord, details, icon, title, show, showSave } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
 
       let header_color = this.state.color ? "beforeButton" : "afterButton"
-      let temp_crn = [], raw_crn
+      let temp_crn = [], actual_crn = [], raw_crn
 
-      this.state.itemArray.map((itemArray, index) => {
+      this.state.itemArray.forEach((itemArray, index) => {
         const { time, Mon, Tues, Wed, Thurs, Fri, class_id, hrs, mins } = itemArray // destructuring
 
         if (Mon !== '') {
           raw_crn = Mon.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
+          actual_crn.push(raw_crn[3].slice(2))
         }
 
         if (Tues !== '') {
           raw_crn = Tues.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-        }
+          actual_crn.push(raw_crn[3].slice(2))}
 
         if (Wed !== '') {
           raw_crn = Wed.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-        }
+          actual_crn.push(raw_crn[3].slice(2))}
 
         if (Thurs !== '') {
           raw_crn = Thurs.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-        }
+          actual_crn.push(raw_crn[3].slice(2))}
 
         if (Fri !== '') {
           raw_crn = Fri.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-        }
+          actual_crn.push(raw_crn[3].slice(2))}
 
       })
 
       temp_crn = [...new Set(temp_crn)]
+      actual_crn = [...new Set(actual_crn)]
 
       // temp_crn.map(crn => {
       //   return (
       //     <small>{crn}<br/></small>
       //   );
       // })
+
+      // <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
+      //   <img className={'img_icon'} src={email_icon} />
+      // </a>
 
       return (
         <div className='all_schedules'>
@@ -367,9 +383,7 @@ class ScheduleList extends Component {
             { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}}/> }
             { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)}/> }
             { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)}/> }
-            <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
-              <img className={'img_icon'} src={email_icon} />
-            </a>
+
 
             { !this.state.col_contents && <input
                 className='input_CRNS'
@@ -378,6 +392,8 @@ class ScheduleList extends Component {
                 onClick={() => this.setState({show: true})}
               />
             }
+
+            { showSave && <img className={'saveName'} src={pin_icon} onClick={this.handleSave.bind(this)}/> }
 
           </div>
           <table id='itemArray'>
@@ -416,7 +432,7 @@ class ScheduleList extends Component {
             }
           </div>
 
-          <div id={'details_toast'}>
+          <div id={'details_toast'} style={{position: 'fixed', top: coord[1] +'px', left: coord[2] + '150px', zIndex: 1}}>
             { details &&
               <Toast
                 onClose={() => this.setState({ details: false })}
@@ -430,15 +446,6 @@ class ScheduleList extends Component {
 
                   <Toast.Body>
                     {temp_crn.toString()}
-
-                    <CopyToClipboard text={temp_crn.toString()}
-                      onCopy={() => this.setState({show: false})}>
-                      <input
-                        id='order_CRNS'
-                        type="button"
-                        value="copy"
-                      />
-                    </CopyToClipboard>
 
                   </Toast.Body>
               </Toast>
