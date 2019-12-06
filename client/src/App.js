@@ -104,7 +104,7 @@ function populateSchedule(courses) {
           }
 
           day = item.slice(0, end)
-          course_time = time_str + ' ' + course_number.replace(' ', '') + ' ' + 'PLACES' + ' ' + 'CRN0000'
+          course_time = time_str + ' ' + course_number.replace(' ', '') + ' ' + 'PLACES' + ' ' + 'CRN:' + course.crn + ' '
 
           if (day === 'Mon') {
             mon = course_time
@@ -204,21 +204,11 @@ function populateSchedule(courses) {
 
                 // we don't need to deal with the rest of the items in a course object
 
-              } else {
-                // if (checkList.includes(filter)) {
-                //   console.log(filter);
-                //   console.log(filtered[filter]);
-                //   let con1 = filtered[filter].split(' ')
-                //   let con2 = newclass.split(' ')
-                //   result = [con1[1], con2[1]]
-                // }
               }
 
               Object.keys(filtered).filter(key => filtered[key] !== '').forEach(itemkey => {
                 check.forEach(itemcheck => {
                   if (itemkey === itemcheck && filtered[itemkey] !== newclass) {
-                    console.log(itemkey);
-                    console.log(filtered[itemkey]);
                     let con1 = filtered[itemkey].split(' ')
                     let con2 = newclass.split(' ')
                     result = [con1[1], con2[1]]
@@ -272,22 +262,9 @@ function populateSchedule(courses) {
 
       })
 
-      // prev_time.forEach(previous => {
-      //   if (!prev_time.includes(time)) {
-      //     all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr, mins: min})
-      //     prev_time.push(time)
-      //   }
-      // })
-
     })
 
   });
-
-  // if (prev_time[0] === 0) {
-  //   prev_time = prev_time.filter(i => i !== 0)
-  // }
-
-  // prev_time = prev_time.map(prev => prev.slice(0, prev.indexOf(':')))
 
   let transit;
 
@@ -322,6 +299,7 @@ class App extends Component {
               description: 'In this course we will provide a broad introductory overview of the discipline of computer science, with no prerequisites or assumed prior knowledge of computers or programming. A significant component of thecourse is an introduction to algorithmic concepts and to programming using Python; programming assignments will explore algorithmic strategies such as selection, iteration, divide-and-conquer, and recursion, as well as introducing the Python programming language. Additional topics will include: the structure and organization of computers, the Internet and World Wide Web, abstraction as a means of managing complexity, social and ethical computing issues, and the question "What is computation?" (Juniors and Seniors by waiver) 3 hr. lect./1 hr. lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:05 pm - 4:00 pm',
+              crn: 99455,
               saved: false,
               added: false,
               locked: false
@@ -332,6 +310,7 @@ class App extends Component {
               description: 'In this course we will provide a broad introductory overview of the discipline of computer science, with no prerequisites or assumed prior knowledge of computers or programming. A significant component of thecourse is an introduction to algorithmic concepts and to programming using Python; programming assignments will explore algorithmic strategies such as selection, iteration, divide-and-conquer, and recursion, as well as introducing the Python programming language. Additional topics will include: the structure and organization of computers, the Internet and World Wide Web, abstraction as a means of managing complexity, social and ethical computing issues, and the question "What is computation?" (Juniors and Seniors by waiver) 3 hr. lect./1 hr. lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:45 pm - 4:00 pm',
+              crn: '23999',
               saved: false,
               added: false,
               locked: false
@@ -342,6 +321,7 @@ class App extends Component {
               description: 'In this course we will provide an introduction to the mathematical foundations of computer science, with an emphasis on formal reasoning. Topics will include propositional and predicate logic, sets, functions, and relations; basic number theory; mathematical induction and other proof methods; combinatorics, probability, and recurrence relations; graph theory; and models of computation. (One CSCI course at the 0100-level) (Juniors and Seniors by waiver) 3 hrs. lect./lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              crn: '23455',
               saved: false,
               added: false,
               locked: false
@@ -352,6 +332,7 @@ class App extends Component {
               description: 'In this course we will study the ideas and structures helpful in designing algorithms and writing programs for solving large, complex problems. The Java programming language and object-oriented paradigm are introduced in the context of important abstract data types (ADTs) such as stacks, queues, trees, and graphs. We will study efficient implementations of these ADTs, and learn classic algorithms to manipulate these structures for tasks such as sorting and searching. Prior programming experience is expected, but prior familiarity with the Java programming language is not assumed. (One CSCI course at the 0100-level) (Juniors and Seniors by waiver) 3 hrs. lect./lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm, Friday 11:00 am - 12:15 pm',
+              crn: '20455',
               saved: false,
               added: false,
               locked: false
@@ -362,6 +343,7 @@ class App extends Component {
               description: 'In this course we will provide an introduction to the mathematical foundations of computer science, with an emphasis on formal reasoning. Topics will include propositional and predicate logic, sets, functions, and relations; basic number theory; mathematical induction and other proof methods; combinatorics, probability, and recurrence relations; graph theory; and models of computation. (One CSCI course at the 0100-level) (Juniors and Seniors by waiver) 3 hrs. lect./lab DED',
               termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              crn: '23955',
               saved: false,
               added: false,
               locked: false
@@ -372,6 +354,7 @@ class App extends Component {
               description: 'This course explores the nature of computation and what it means to compute. We study important models of computation (finite automata, push-down automata, and Turing machines) and investigate their fundamental computational power. We examine various problems and try to determine the computational power needed to solve them. Topics include deterministic versus non-deterministic computation, and a theoretical basis for the study of NP-completeness. (CSCI 0200 and CSCI 0201) 3 hrs. lect./disc. DED',
               termsOffered: 'Fall 2015, Fall 2016, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:30 pm - 4:15 pm',
+              crn: '13455',
               saved: false,
               added: false,
               locked: false
@@ -382,6 +365,7 @@ class App extends Component {
               description: 'This course focuses on the development of correct and efficient algorithmic solutions to computational problems, and on the underlying data structures to support these algorithms. Topics include computational complexity, analysis of algorithms, proof of algorithm correctness, advanced data structures such as balanced search trees, and also important algorithmic techniques including greedy and dynamic programming. The course complements the treatment of NP-completeness in CSCI 0301. (CSCI 0200 and CSCI 0201) 3 hrs. lect./disc. DED',
               termsOffered: 'Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Monday, Thursday 2:00 pm - 4:00 pm',
+              crn: '28755',
               saved: false,
               added: false,
               locked: false
@@ -392,6 +376,7 @@ class App extends Component {
               description: 'Artificial Intelligence (AI) is the study of computational systems that exhibit rational behavior. Applications include strategic game playing, medical diagnosis, speech and handwriting recognition, Internet search, and robotics. Course topics include intelligent agent architectures, search, knowledge representation, logical reasoning, planning, reasoning under uncertainty, machine learning, and perception and action. (CSCI 0200 and CSCI 0201) 3 hrs. lect./lab DED',
               termsOffered: 'Spring 2020',
               timesOffered: 'Monday, Wednesday 2:00 pm - 4:00 pm',
+              crn: '20055',
               saved: false,
               added: false,
               locked: false
@@ -402,6 +387,7 @@ class App extends Component {
               description: 'This course examines the process of developing larger-scale software systems. Laboratory assignments emphasize sound programming practices, tools that facilitate the development process, and teamwork. (CSCI 0200 and CSCI 0201) 3 hrs. lect./lab',
               termsOffered: 'Fall 2015, Spring 2017, Spring 2018, Spring 2019, Fall 2019, Spring 2020',
               timesOffered: 'Monday, Wednesday 2:00 pm - 4:00 pm',
+              crn: '20355',
               saved: false,
               added: false,
               locked: false
@@ -412,6 +398,7 @@ class App extends Component {
               description: 'An operating system manages the complex resources of modern computers and provides an interface between the user and the hardware. This course covers the key concepts of operating systems, including process, memory, and storage management; synchronization and deadlock; protection and security; and distributed systems. (CSCI 0200 previously or concurrently, and CSCI 0202) 3 hrs. lect./lab DED',
               termsOffered: 'Spring 2020',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              crn: '90455',
               saved: false,
               added: false,
               locked: false
@@ -422,6 +409,7 @@ class App extends Component {
               description: 'Students will become intimately acquainted with the low-level software services that applications often take for granted. Through a broad, project-based survey of core system libraries and UNIX system calls, students will explore process management, memory management, linking and loading, threading, synchronization, filesystem operations, and inter-process communication (networking). In each area, students will build software using these building blocks, gaining an understanding of the behavior and efficiency of the tools at their disposal. Students will also gain experience building larger, more complex systems upon which applications can be built. This course is ideal for students who wish to understand and construct the software infrastructure upon which user-level software depends. (CSCI 0202) 3 hrs. lect DED',
               termsOffered: 'Fall 2017, Fall 2018, Fall 2019',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              crn: '24455',
               saved: false,
               added: false,
               locked: false
@@ -432,6 +420,7 @@ class App extends Component {
               description: 'In this course we will explore and implement algorithmic solutions to modern biology questions. Students will be introduced to motivating biological questions—such as, “How do we compare DNA sequences?”—and then implement solutions to those problems using dynamic programming, graph, randomized, combinatorial and/or other algorithmic approaches. At the completion of the course students will be able to precisely define computational biology problems, design an algorithmic solution and implement that solution in software. No biology background is assumed, but students are expected to be able to implement sophisticated algorithms in Python or another language of their choice. (CSCI 201) 3 hrs. lect./lab. DED',
               termsOffered: 'Spring 2017, Spring 2019',
               timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+              crn: '21155',
               saved: false,
               added: false,
               locked: false
@@ -442,6 +431,7 @@ class App extends Component {
             description: 'This senior seminar provides a capstone experience for computer science majors at Middlebury College. Through lectures, readings, and a series of two to three week individual and group assignments, we will introduce important concepts in research and experimental methods in computation. Examples will include: reading research papers; identifying research problems; dealing with big data; experimental design, testing and analysis; and technical writing in computer science. (Approval only).',
             termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
             timesOffered: 'Monday, Wednesday, Friday 9:00 am - 10:00 am',
+            crn: '21109',
             saved: false,
             added: false,
             locked: false
@@ -452,12 +442,14 @@ class App extends Component {
             description: 'The senior thesis is required for all CSCI majors who wish to be considered for high and highest departmental honors, and is recommended for students interested in pursuing graduate study in computer science. Students will spend the semester researching and writing, and developing and experimenting as appropriate for their topic. All students will be expected to report on their work in the form of a written thesis, a poster, and an oral presentation at the end of the semester. In addition, throughout the semester, students will meet as a group to discuss research and writing, and will be expected to attend talks in the Computer Science lecture series. Before approval to join the class is granted, students are expected to have chosen a thesis adviser from the CSCI faculty, and determined a thesis topic with the guidance and approval of that adviser. (CSCI 0701 and approval required) 3 hrs. lect./disc.',
             termsOffered: 'Fall 2015, Spring 2016, Fall 2016, Spring 2017, Fall 2017, Spring 2018, Fall 2018, Spring 2019, Fall 2019, Spring 2020',
             timesOffered: 'Tuesday, Thursday 2:00 pm - 4:00 pm',
+            crn: '20005',
             saved: false,
             added: false,
             locked: false
         }
         ],
-        list_schedules: [],
+        list_schedules: {},
+        list_schedulesDepth: [],
         button_position: false,
         show: false,
         showConflict: false,
@@ -466,7 +458,8 @@ class App extends Component {
         searchedTerm: '',
         added_classes: [],
         formatted_classes: [],
-        scheduleEmpty: true
+        scheduleEmpty: true,
+        activeScheduleId: ''
       };
 
       this.searchHandler = this.searchHandler.bind(this);
@@ -476,13 +469,31 @@ class App extends Component {
     // adds a new schedule when button is clicked
     createNewSchedule = () => {
 
-      let list = this.state.list_schedules.slice();
-      let name = 'schedule_'.concat(this.state.list_schedules.length);
-      list.push(name);
+      // let list = this.state.list_schedules.slice();
+      // let name = 'schedule_'.concat(this.state.list_schedules.length);
+      // list.push(name);
+      //
+      // this.setState({ list_schedules: list});
+      //
+      // if (this.state.list_schedules.length === 0) {
+      //   this.setState({ button_position: true });
+      // }
 
-      this.setState({ list_schedules: list});
+    //  const { list_schedules } = this.state
 
-      if (this.state.list_schedules.length === 0) {
+      let name = 'schedule_'.concat(Object.keys(this.state.list_schedules).length)
+      let less = {}
+      less[name] = name
+      let list = {...this.state.list_schedules, ...less}
+
+
+      let listDepth = this.state.list_schedulesDepth.slice()
+      listDepth.push({id: name, scheduleName: name, classes: [], specFormatted: [], empty: true})
+
+      this.setState({ list_schedules: list})
+      this.setState({ list_schedulesDepth: listDepth})
+
+      if (Object.keys(this.state.list_schedules).length === 0) {
         this.setState({ button_position: true });
       }
 
@@ -506,39 +517,64 @@ class App extends Component {
     addClass = (id) => {
       let temp_list = [], removed = [], new_class = []; // have to be lists in case a class has a lab they will be added together
 
+      this.setState({ activeScheduleId: id[1]})
+
+      temp_list = this.state.list_schedulesDepth.filter(depth => depth.id === id[1])[0].classes
+      console.log('comp', temp_list);
+      if (!temp_list) {
+        temp_list = []
+      }
+
       this.setState({ classes: this.state.classes.map(classname => {
-          if(classname.id === id){
+          if(classname.id === id[0]){
               classname.added = !classname.added
           }
 
           if (classname.added === true) {
 
-            if (!this.state.added_classes.includes(classname)){
+            if (!temp_list.includes(classname) && classname.id === id[0] ){
               new_class.push(classname)
+              console.log('new', new_class);
             }
 
           } else {
 
-            if (this.state.added_classes.includes(classname)){
+            if (temp_list.includes(classname)){
               removed.push(classname)
+              console.log('rem', removed);
             }
 
           }
           return classname;
       })})
 
-      temp_list = this.state.added_classes.slice()
+      //temp_list = this.state.added_classes.slice()
+      console.log('bdepth', this.state.list_schedulesDepth);
+      // temp_list = this.state.list_schedulesDepth.filter(depth => depth.id === id[1])
+      // console.log(temp_list);
+      // temp_list = temp_list.classes
+      // console.log('raw', temp_list);
+
+      // temp_list = compare.slice()
+      //
+      // if (!temp_list) {
+      //   temp_list = []
+      // }
 
       if (removed) {
         removed.forEach(remove => {
           temp_list = temp_list.filter(item => item.title !== remove.title)
         })
+        console.log('arem', temp_list);
       }
 
       if (new_class) {
+        console.log('anewIn', temp_list);
+
         new_class.forEach(newClass => {
           temp_list.push(newClass)
         })
+        console.log('anew', temp_list);
       }
 
       let populate = populateSchedule(temp_list)
@@ -551,9 +587,32 @@ class App extends Component {
         console.log("conflict", populate);
       }
 
-      this.setState({scheduleEmpty: !temp_list.length})
-      this.setState({added_classes: temp_list})
-      this.setState({formatted_classes: populate})
+      //this.setState({scheduleEmpty: !temp_list.length})
+      //this.setState({added_classes: temp_list})
+
+      let temp_depth = this.state.list_schedulesDepth.slice()
+
+      temp_depth.forEach(depth => {
+        console.log('inDepth', temp_list);
+        if (depth.id === id[1]) {
+          depth.classes = temp_list
+          depth.specFormatted = populate
+          depth.empty = !temp_depth.length
+          console.log('classes added');
+          console.log(depth.classes);
+        }
+
+        // updating schedule names
+        Object.keys(this.state.list_schedules).forEach(itemSched => {
+          if (depth.id === itemSched && depth.scheduleName !== this.state.list_schedules[itemSched]) {
+            depth.scheduleName = this.state.list_schedules[itemSched]
+          }
+        })
+      })
+console.log('depth', temp_depth);
+      this.setState({list_schedulesDepth: temp_depth})
+      console.log(this.state.list_schedulesDepth);
+      //this.setState({formatted_classes: populate})
 
     }
 
@@ -582,20 +641,51 @@ class App extends Component {
 
     // deletes a schedule when delete icon is clicked
     handleDelete = (item_id) => {
+      //const { list_schedules } = this.state
+
+      // let temp_keys = Object.keys(this.state.list_schedules).forEach(item => item !== item_id )
+      // let key_val = {}, less_val = {}
+      // console.log(Object.keys(this.state.list_schedules));
+      //
+      // if (!temp_keys) {
+      //   temp_keys = []
+      //   key_val = {}
+      // } else {
+      //   temp_keys.forEach(tempKey => {
+      //     less_val[tempKey] = this.state.list_schedules[tempKey]
+      //     key_val = {...key_val, ...less_val}
+      //   })
+      // }
+
+      //this.setState({ list_schedules: key_val})
+
+      let temp_keys = this.state.list_schedules
+
+      delete temp_keys[item_id]
+
+      this.setState({ list_schedules: temp_keys})
+
       this.setState(prevState => ({
-        list_schedules: prevState.list_schedules.filter(item => item != item_id )
+        list_schedulesDepth: prevState.list_schedulesDepth.filter(depth => depth.id !== item_id)
       }));
 
       this.setState({ show: true });
 
     }
+
+    handleScheduleName = (value, newValue) => {
+      let temp_scheds =  {...this.state.list_schedules}
+      temp_scheds[value] = newValue
+      this.setState({ list_schedules: temp_scheds})
+    }
+
     searchHandler = (event) => {
         this.setState({searchedTerm: event.target.value})
     }
 
     render() {
 
-        const {alert, list_schedules, button_position, show, showConflict} = this.state;
+        const {alert, list_schedules, list_schedulesDepth, button_position, show, showConflict} = this.state;
 
         return (
           <div className="App">
@@ -625,8 +715,8 @@ class App extends Component {
                 <div>
                     {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
-                      list_schedules.map((item, index) => (
-                        <ScheduleList id={item} key={item} classes={this.state.formatted_classes} delete_callback={this.handleDelete.bind(this, item)} name={item} isEmpty={this.state.scheduleEmpty}/> // we can use the key to refer to the schedule clicked
+                      list_schedulesDepth.map((item, index) => (
+                        <ScheduleList id={item.id} key={item.id} classes={item.specFormatted} delete_callback={this.handleDelete.bind(this, item.id)} name={item.scheduleName} nameCallback={this.handleScheduleName.bind(this, item.id)} isEmpty={item.empty}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
@@ -648,7 +738,7 @@ class App extends Component {
                       <strong>Schedule 0 has a conflict!</strong>
                       </strong>
                     </Toast.Header>
-                      <Toast.Body>{alert[1]} conflicts with {alert[0]}; remove {alert[0]} to view the newly added course</Toast.Body>
+                      <Toast.Body><p style={{color: 'red'}}>{alert[1]} conflicts with {alert[0]}; remove {alert[0]} to view the newly added course</p></Toast.Body>
                     </Toast> }
                 </div>
 
@@ -672,7 +762,7 @@ class App extends Component {
                         <ClassList classname='scrollable' classes={this.state.classes} searchedTerm={this.state.searchedTerm} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass}/>
                     </Tab>
                     <Tab eventKey='2' title="Saved Classes">
-                        <SavedList className='scrollable' classes={this.state.classes} searchedTerm={this.state.searchedTerm} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
+                        <SavedList className='scrollable' classes={this.state.classes} searchedTerm={this.state.searchedTerm} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass} schedules={list_schedules}/>
                     </Tab>
                     </Tabs>
               </div>
