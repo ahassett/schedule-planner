@@ -11,7 +11,7 @@ import AppLogo from './logo.png';
 
 import { AuthUserContext } from '../session';
 
-import { Tab, Tabs, TabContent, Toast,  Dropdown, Form, Button, FormControl, Nav } from 'react-bootstrap';
+import { Tab, Tabs, TabContent, Toast,  DropdownButton, SplitButton, Dropdown, Form, Button, FormControl, Nav } from 'react-bootstrap';
 
 import uuid from 'uuid';
 
@@ -282,7 +282,9 @@ class Home extends Component {
           this.setState({searchedTerm: event.target.value})
       }
 
-
+      // <Form inline class="form-control input-lg" style={{ fontSize:'40px', position:'absolute', top:'70px', left:'1300px'}}>
+      //   <FormControl id="inputlg" class="form-control input-lg" onChange={this.searchHandler} value={this.state.searchedTerm} type="text" placeholder="Search" className=" mr-sm-2" />
+      // </Form>
       render() {
           const {list_schedules, button_position, show} = this.state;
 
@@ -293,11 +295,28 @@ class Home extends Component {
                         <div>
                             <img src={AppLogo} width='100px' height='100px' style={{position:'absolute', left:'10px', top:'20px'}}/>
                         </div>
-                      <Button variant="outline-primary" size="lg" style={{position:'absolute', top:'65px', left:'1670px'}}> Email </Button>
 
-                      <Form inline class="form-control input-lg" style={{ fontSize:'40px', position:'absolute', top:'70px', left:'1300px'}}>
-                        <FormControl id="inputlg" class="form-control input-lg" onChange={this.searchHandler} value={this.state.searchedTerm} type="text" placeholder="Search" className=" mr-sm-2" />
-                      </Form>
+                      <form>
+                      <div class="form-group" style={{ fontSize:'40px', position:'absolute', top:'60px', left:'1100px'}}>
+                          <input style={{height:'55px', width:'300px'}} class="form-control input-lg" id="inputlg" type="text" placeholder="Search" onChange={this.searchHandler} value={this.state.searchedTerm}/>
+                      </div>
+                      </form>
+
+                      <div>
+                      {[SplitButton].map((DropdownType, idx) => (
+                        <DropdownType
+                          size="lg"
+                          style={{right: '185px'}}
+                          title={this.state.dropDownMenu[0]}
+                          id={`dropdown-button-drop-${idx}`}
+                          key={idx}
+                        >
+                          <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[1])}>{this.state.dropDownMenu[1]}</Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[2])}>{this.state.dropDownMenu[2]}</Dropdown.Item>
+                        </DropdownType>
+                      ))}
+                    </div>
 
                       <SignOutButton/>
                     </Nav>
@@ -326,21 +345,11 @@ class Home extends Component {
 
                 <div className='catalog'>
 
-                    <Dropdown className="sticky" style={{position:'absolute', top:'10px', right:'15px'}}>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        {this.state.dropDownMenu[0]}
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[1])}>{this.state.dropDownMenu[1]}</Dropdown.Item>
-                        <Dropdown.Item onClick={this.dropDownDisplay.bind(this, this.state.dropDownMenu[2])}>{this.state.dropDownMenu[2]}</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-
                     <Tabs defaultActiveKey={this.state.activeTab} className="stickynav" id="tabs" style={{marginTop:'20px', position: 'sticky', top:'0px'}}>
                       <Tab eventKey='1' title="Catalog">
                           <ClassList classname='scrollable' classes={this.state.classes} searchedTerm={this.state.searchedTerm} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass}/>
                       </Tab>
+
                       <Tab eventKey='2' title="Saved Classes">
                           <SavedList className='scrollable' classes={this.state.classes} searchedTerm={this.state.searchedTerm} selectedTerm={this.state.dropDownMenu[0]} saveClass={this.saveClass} addClass={this.addClass} lockClass={this.lockClass}/>
                       </Tab>
