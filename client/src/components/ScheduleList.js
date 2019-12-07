@@ -402,7 +402,7 @@ class ScheduleList extends Component {
               style={width_change}
               onChange={this.handleChange.bind(this)}
             />
-            <p className={'num_icon'}>{schId.slice(schId.indexOf('_')+1)}</p>
+            <p style={{fontSize: '12px'}} className={'num_icon'}>{schId.slice(schId.indexOf('_')+1)}</p>
             { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}}/> }
             { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)}/> }
             { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)}/> }
