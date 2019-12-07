@@ -46,21 +46,9 @@ class PasswordForgetFormBase extends Component {
             <div>
                 <img src={AppLogo} width='500px' height='500px' style={{position:'absolute', left:'365px', top:'80px'}}/>
             </div>
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={this.state.email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-        {error && <p>{error.message}</p>}
-      </form>
 
-      <Card border="primary" text="black" style={{ padding:'65px', width: '35rem', top:'90px', left:'880px' }}>
+
+      <Card border="primary" text="black" style={{ padding:'65px', width: '35rem', top:'120px', left:'880px' }}>
         <Card.Body>
           <Card.Title style={{ fontSize: '40px' }}>Reset Password</Card.Title>
           <Card.Text>

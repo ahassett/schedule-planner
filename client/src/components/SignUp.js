@@ -5,6 +5,7 @@ import { SignInLink } from './SignIn';
 
 import { withFirebase } from '../database';
 import * as ROUTES from '../constants/routes';
+import { AuthUserContext } from '../session';
 
 import { Form, Button, Card } from 'react-bootstrap';
 import AppLogo from './logo.png';
@@ -14,6 +15,22 @@ const SignUpPage = () => (
     <SignUpForm />
   </div>
 );
+//
+// const SignUpPage = () => (
+//   <div>
+//     <AuthUserContext.Consumer>
+//         {authUser =>
+//             authUser ?
+//             <div>
+//                 <SignUpForm />
+//             </div>
+//             :<div>
+//             </div>
+//
+//         }
+//     </AuthUserContext.Consumer>
+//   </div>
+// );
 
 const INITIAL_STATE = {
   username: '',
@@ -35,6 +52,7 @@ class SignUpFormBase extends Component {
        this.props.firebase
          .doCreateUserWithEmailAndPassword(email, passwordOne)
          .then(authUser => {
+           this.props.history.push(ROUTES.HOME);
            // Create a user in your Firebase realtime database
            return this.props.firebase
              .user(authUser.user.uid)

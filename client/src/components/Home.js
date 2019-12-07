@@ -5,7 +5,6 @@ import { withFirebase } from '../database';
 import ClassList from './ClassList';
 import ScheduleList from './ScheduleList';
 import SavedList from './SavedList';
-import SignInPage from './SignIn';
 import SignOutButton from './SignOut';
 
 import AppLogo from './logo.png';
@@ -18,6 +17,8 @@ import uuid from 'uuid';
 
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+// https://ssb-prod.ec.middlebury.edu/PNTR/saturn_midd.course_catalog_utlq.catalog_page_by_dept?p_term=201990&p_course_subj_code=AMST
 
 // functions
 function subtractTime(time_str){
