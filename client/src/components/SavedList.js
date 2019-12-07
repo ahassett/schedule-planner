@@ -16,9 +16,10 @@ class SavedList extends Component {
 
     render() {
         const { classes, searchedTerm, saveClass, selectedTerm, lockClass, addClass, schedules} = this.props;
+        console.log(schedules);
         const savedClasses = classes.filter((classname) => (classname.saved === true) && classname.termsOffered.includes(selectedTerm));
         return savedClasses.filter(searchingFor(searchedTerm)).map((savedClass) => (
-            <SavedItem key={ savedClass.id } classname={savedClass} saveClass={saveClass} addClass={addClass} lockClass={lockClass} schedules={schedules}/>
+              <SavedItem key={ savedClass.id } classname={savedClass} saveClass={saveClass} addClass={addClass} lockClass={lockClass} schedules={schedules}/>
         ));
             }
     }
