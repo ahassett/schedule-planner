@@ -7,7 +7,7 @@ import AddButton from './add-button.png';
 import DeleteButton from './delete-button.png';
 import LockedButton from './locked.png';
 import UnlockedButton from './unlocked.png';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, ListGroup } from 'react-bootstrap';
 
 class SavedItem extends Component {
   constructor() {
@@ -71,10 +71,24 @@ class SavedItem extends Component {
       console.log('id', [this.props.classname.id, name]);
     }
 
+    handleDivs = () => {
+        console.log(this.props.classname.comments)
+                return (
+                    <ListGroup.Item>
+                        {this.props.classname.comments.map((item) => (
+                            <ListGroup.Item>{item}</ListGroup.Item>
+                        ))}
+                    </ListGroup.Item>
+                )
+
+    }
+
     render() {
-        const { id } = this.props.classname;
+        const { id, comments } = this.props.classname;
         const { displayValue } = this.state;
         let all_contents = [];
+
+        console.log(this.props.classname)
 
         if (this.props.schedules) {
           if (Object.keys(this.props.schedules).length > 1){
@@ -126,7 +140,9 @@ class SavedItem extends Component {
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="1">
                         <Card.Body>
-                            Aiko is happy
+                          <ListGroup variant="flush">
+                                {this.handleDivs()}
+                          </ListGroup>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
