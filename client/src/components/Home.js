@@ -480,6 +480,13 @@ class Home extends Component {
         this.setState({ show: true });
 
       }
+      
+      handleScheduleName = (value, newValue) => {
+          let temp_scheds =  {...this.state.list_schedules}
+          temp_scheds[value] = newValue
+          this.setState({ list_schedules: temp_scheds})
+      }
+
 
       searchHandler = (event) => {
           this.setState({searchedTerm: event.target.value})
@@ -490,6 +497,7 @@ class Home extends Component {
       // </Form>
       render() {
           const {alert, list_schedules, list_schedulesDepth, button_position, show, showConflict} = this.state;
+          console.log(list_schedulesDepth)
 
           return (
             <div className="Landing">

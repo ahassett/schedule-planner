@@ -255,12 +255,12 @@ class SavedItem extends Component {
                           label={ this.props.classname.title }
                         />
 
+
                        { Object.keys(schedules).map((sch, index) => (
                          <div key={sch} className="dropdown" id="trial" style ={{position:'absolute', left:`${660 - (index * 30)}` + 'px', top:'10px', zIindex: '1', width: '10px'}}>
                            <img key={sch} src={this.getAddedSrc(sch)} onClick={this.handleAdd.bind(this, sch)} width='30px' height='30px'/>
                          </div>
                        )) }
-
 
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="1">
