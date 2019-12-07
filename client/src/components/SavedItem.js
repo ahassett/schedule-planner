@@ -135,8 +135,6 @@ class SavedItem extends Component {
                         {all_contents}
                       </div>
                     </div>
-                    <img src={this.getLockedSrc()} onClick={this.props.lockClass.bind(this, id)} className="dropIcon" width='30px' height='30px' style={{position:'absolute', left:'605px', top:'10px'}}/>
-
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="1">
                         <Card.Body>
