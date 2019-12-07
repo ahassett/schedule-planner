@@ -63,7 +63,7 @@ function populateSchedule(courses) {
 
   courses.forEach((course, index) => {
     let day_time = course.timesOffered
-    let course_number = course.title.substring(0, course.title.indexOf('-') -1)
+    let course_number = course.title.substring(0, course.title.indexOf(':'))
     let dash_loc, course_time, time_array = [], classId = index
 
     while(day_time.includes('-')) {
@@ -480,7 +480,7 @@ class Home extends Component {
         this.setState({ show: true });
 
       }
-      
+
       handleScheduleName = (value, newValue) => {
           let temp_scheds =  {...this.state.list_schedules}
           temp_scheds[value] = newValue

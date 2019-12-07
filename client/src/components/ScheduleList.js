@@ -119,9 +119,8 @@ class ScheduleList extends Component {
 
         day = day.slice(day.indexOf(' ') + 1)
         day = day.slice(0, day.indexOf(' '))
-        day = day.slice(0, 4) + ' ' + day.slice(4)
 
-        match = this.props.displayDetails.filter(det => det.title.slice(0, 9) === day)
+        match = this.props.displayDetails.filter(det => det.title.slice(0, 8) === day)
 
         this.setState({ courseDetails: match[0]})
       }
@@ -355,28 +354,28 @@ class ScheduleList extends Component {
         if (Mon !== '') {
           raw_crn = Mon.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-          actual_crn.push(raw_crn[3].slice(2))
+          actual_crn.push(raw_crn[3].slice(4))
         }
 
         if (Tues !== '') {
           raw_crn = Tues.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-          actual_crn.push(raw_crn[3].slice(2))}
+          actual_crn.push(raw_crn[3].slice(4))}
 
         if (Wed !== '') {
           raw_crn = Wed.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-          actual_crn.push(raw_crn[3].slice(2))}
+          actual_crn.push(raw_crn[3].slice(4))}
 
         if (Thurs !== '') {
           raw_crn = Thurs.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-          actual_crn.push(raw_crn[3].slice(2))}
+          actual_crn.push(raw_crn[3].slice(4))}
 
         if (Fri !== '') {
           raw_crn = Fri.split(' ')
           temp_crn.push(raw_crn[1] + ' ' + raw_crn[3])
-          actual_crn.push(raw_crn[3].slice(2))}
+          actual_crn.push(raw_crn[3].slice(4))}
 
       })
 
@@ -442,7 +441,7 @@ class ScheduleList extends Component {
                   <Toast.Body>
                     {temp_crn.toString()}
 
-                    <CopyToClipboard text={temp_crn.toString()}
+                    <CopyToClipboard text={actual_crn.toString()}
                       onCopy={() => this.setState({show: false})}>
                       <input
                         id='order_CRNS'
@@ -463,15 +462,15 @@ class ScheduleList extends Component {
                 show={details}>
 
                   <Toast.Header>
-                    <strong className="mr-auto">{courseDetails.title}</strong>
+                    <strong className="mr-auto">{courseDetails ? courseDetails.title : ''}</strong>
                   </Toast.Header>
 
                   <Toast.Body>
-                    {courseDetails.time}
+                    {courseDetails ? courseDetails.time : ''}
                     <strong>{'    '}<br/></strong>
-                    {courseDetails.place}
+                    {courseDetails ? courseDetails.place : ''}
                     <strong>{' '}<br/></strong>
-                    CRN: {courseDetails.crn}
+                    CRN: {courseDetails ? courseDetails.crn : ''}
                   </Toast.Body>
               </Toast>
             }
