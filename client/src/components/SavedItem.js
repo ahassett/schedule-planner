@@ -229,17 +229,17 @@ class SavedItem extends Component {
         const { schedules } = this.props;
         let all_contents = []
 
-        if (this.props.schedules) {
-          if (Object.keys(this.props.schedules).length > 1){
-            Object.keys(this.props.schedules).forEach((sch, index) => {
-              console.log('sch', sch);
-              all_contents.push(<a href="#" key={index} onClick={this.handleDropdownItem.bind(this, sch)}>{this.props.schedules[sch]}</a>)
-            })
-          }
-        }
+        // if (this.props.schedules) {
+        //   if (Object.keys(this.props.schedules).length > 1){
+        //     Object.keys(this.props.schedules).forEach((sch, index) => {
+        //       console.log('sch', sch);
+        //       all_contents.push(<a href="#" key={index} onClick={this.handleDropdownItem.bind(this, sch)}>{this.props.schedules[sch]}</a>)
+        //     })
+        //   }
+        // }
 
 
-   
+
 
 
         return (
