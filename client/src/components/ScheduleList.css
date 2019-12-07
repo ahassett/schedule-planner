@@ -27,6 +27,13 @@
   margin: 9px 8px
 }
 
+.saveName {
+  width: 23px;
+  height: 23px;
+  margin: 7px 5px;
+  float: left;
+}
+
 .small_cols {
   height: 40px
 }
