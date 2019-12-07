@@ -79,8 +79,9 @@ h1 {
     margin-left: 20px;
     border: 4px solid #234660;
     border-radius: 5px;
-    width: 620px;
-    height: 510px;
+    width: 930px;
+    height: 720px;
+    top: 180px;
     overflow-y: scroll;
 }
 
@@ -89,9 +90,10 @@ h1 {
     border: 4px solid #234660;
     right: 500px;
     border-radius: 5px;
-    width: 730px;
-    height: 510px;
-    left: 665px;
+    width: 930px;
+    top: 180px;
+    height: 720px;
+    left: 965px;
     overflow-y: scroll;
 }
 
@@ -138,6 +140,17 @@ h1 {
   color: #000000;
   background: rgba( 22, 230, 137, 1 );
   font-size: 13px;
+}
+
+.navigation{
+    background-color: #1647fb;
+    height: 5%;
+    padding: 2em;
+    width: 1920px;
+
+}
+.search-input-large {
+    font-size: 24px;
 }
 
 button:hover {

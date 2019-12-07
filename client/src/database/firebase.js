@@ -2,7 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth'; // implement the authentication API
 import 'firebase/database'; // implement the database API
 
-//   apiKey: process.env.REACT_APP_API_KEY,
+import logClassesInfo from '../constants/scraped';
+
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,11 +14,9 @@ const config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-// initializing firebase
-
-class Firebase {
+class Firebase { // connects interaciton between React and Firebase
   constructor() {
-    app.initializeApp(config);
+    app.initializeApp(config); // only needs initilaizing once
 
     this.auth = app.auth();
     this.db = app.database();
@@ -38,9 +37,13 @@ class Firebase {
   doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
   // user API
-
   user = uid => this.db.ref(`users/${uid}`); // specific user
   users = () => this.db.ref('users'); // all users
-}
+
+  // classes API
+  class = uid => this.db.ref(`classes/${uid}`); // specific class;
+  classes = () => this.db.ref('classes');
+
+  }
 
 export default Firebase;

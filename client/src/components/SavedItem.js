@@ -7,7 +7,7 @@ import AddButton from './add-button.png';
 import DeleteButton from './delete-button.png';
 import LockedButton from './locked.png';
 import UnlockedButton from './unlocked.png';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, ListGroup } from 'react-bootstrap';
 
 import Add0 from './add0.png';
 import Add1 from './add1.png';
@@ -211,60 +211,35 @@ class SavedItem extends Component {
     //   console.log('id', [this.props.classname.id, name]);
     // }
 
+    handleDivs = () => {
+        console.log(this.props.classname.comments)
+                return (
+                    <ListGroup.Item>
+                        {this.props.classname.comments.map((item) => (
+                            <ListGroup.Item>{item}</ListGroup.Item>
+                        ))}
+                    </ListGroup.Item>
+                )
+
+    }
+
     render() {
-        const { id } = this.props.classname;
+        const { id, comments } = this.props.classname;
         const { displayValue } = this.state;
         const { schedules } = this.props;
-        let all_contents = [], allcreat;
+        let all_contents = []
 
-        console.log('g',schedules);
+        if (this.props.schedules) {
+          if (Object.keys(this.props.schedules).length > 1){
+            Object.keys(this.props.schedules).forEach((sch, index) => {
+              console.log('sch', sch);
+              all_contents.push(<a href="#" key={index} onClick={this.handleDropdownItem.bind(this, sch)}>{this.props.schedules[sch]}</a>)
+            })
+          }
+        }
 
-        // if (schedules) {
-        //   if (Object.keys(schedules).length > 1){
-        //     Object.keys(schedules).forEach((sch, index) => {
-        //       console.log('sch', sch);
-        //       all_contents.push(<a href="#" key={index} onClick={this.handleDropdownItem.bind(this, sch)}>{schedules[sch]}</a>)
-        //     })
-        //   }
-        //   console.log('ho');
-        // }
 
-        console.log(schedules);
-
-        // <Dropdown className="sticky" style={{position:'absolute', top:'10px', right:'15px'}}>
-        //   <Dropdown.Toggle variant="success" id="dropdown-basic">
-        //     {this.getAddedSrc()}
-        //   </Dropdown.Toggle>
-        //
-        //   <Dropdown.Menu style={{zIndex:1}}>
-        //     <Dropdown.Item onClick={this.handleDropdownItem()}>shc</Dropdown.Item>
-        //     <Dropdown.Item onClick={this.handleDropdownItem()}>shc</Dropdown.Item>
-        //   </Dropdown.Menu>
-        // </Dropdown>
-
-        // <div className="dropdown" style ={{position:'absolute', left:'670px', top:'10px', zIindex: '1'}}>
-        //   <img src={this.getAddedSrc()} onClick={this.handleAdd} className={ this.getAddedStyle() } className="dropIcon" width='30px' height='30px'/>
-        //   <div id="myDropdown" className="dropdown-content"  style={{display: displayValue}}>
-        //     <a href="#" onClick={() => this.setState({displayValue: 'none'})}>sch</a>
-        //   </div>
-        // </div>
-
-        //<img src={this.getLockedSrc()} onClick={this.props.lockClass.bind(this, id)} className="dropIcon" width='30px' height='30px' style={{position:'absolute', left:'605px', top:'10px'}}/>
-
-        // <div key= {sch} className="dropdown" id="trial" style ={{position:'absolute', left:'570px', top:'10px', zIindex: '1', width: '10px'}}>
-        //   <img key= {sch} src={this.getAddedSrc()} onClick={this.handleAdd} className={ this.getAddedStyle() } className="dropIcon" width='30px' height='30px'/>
-        //   <div id="myDropdown" className="dropdowncontent"  style={{display: displayValue, height: 100, overflowY: 'scroll'}}>
-        //     {all_contents}
-        //   </div>
-        // </div>
-
-        //key={sch.slice(sch.indexOf('_')+1)}
-
-        // { Object.keys(schedules).map(sch => (
-        //   <div key={sch} className="dropdown" id="trial" style ={{position:'absolute', left:'570px', top:'10px', zIindex: '1', width: '10px'}}>
-        //     <img key={sch} src={this.getAddedSrc()} onClick={this.handleAdd} className={ this.getAddedStyle() } className="dropIcon" width='30px' height='30px'/>
-        //   </div>
-        // )) }
+   
 
 
         return (
@@ -290,6 +265,10 @@ class SavedItem extends Component {
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey="1">
                         <Card.Body>
+
+                          <ListGroup variant="flush">
+                                {this.handleDivs()}
+                          </ListGroup>
 
                         </Card.Body>
                     </Accordion.Collapse>
