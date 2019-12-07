@@ -121,7 +121,6 @@ function populateSchedule(courses) {
           }
         }
       })
-      console.log({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr});
       prev_time.forEach(previous => {
         if (!prev_time.includes(time)) {
           all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: classId, hrs: hr})
@@ -132,7 +131,6 @@ function populateSchedule(courses) {
     })
 
   })
-  console.log(all_courses);
       slots.forEach(slot => {
         if(prev_time.includes(slot.time)) {
           formatted.push(all_courses.filter(item_course => item_course.time === slot.time).pop())
@@ -172,7 +170,6 @@ class Home extends Component {
                         ...classObject[key],
                         id: uuid(),
                       }));
-                      console.log(classList)
                       this.setState({
                         classes: classList
                       });
@@ -252,7 +249,6 @@ class Home extends Component {
 
       }
       lockClass = (id) => {
-          console.log(id);
           this.setState({ classes: this.state.classes.map(classname => {
               if(classname.id === id){
                   classname.locked = !classname.locked
@@ -262,7 +258,6 @@ class Home extends Component {
       }
 
       dropDownDisplay = (selectedClass) => {
-          console.log(selectedClass)
           const dropDown = this.state.dropDownMenu
           if (this.state.dropDownMenu.includes(selectedClass)) {
               const swapIndex = dropDown.indexOf(selectedClass)
