@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { SignUpLink } from './SignUp';
 import { withFirebase } from '../database';
 import { PasswordForgetLink } from './PasswordForget';
+import { AuthUserContext } from '../session';
+
+import AppLogo from './logo.png';
+
+import { Form, Button, Card } from 'react-bootstrap';
 
 import * as ROUTES from '../constants/routes';
 
 const SignInPage = () => (
   <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
+    <AuthUserContext.Consumer>
+        {authUser =>
+            authUser ?
+            <div>
+            </div>
+            :<div>
+                <SignInForm />
+            </div>
+
+        }
+    </AuthUserContext.Consumer>
   </div>
 );
 const INITIAL_STATE = {
@@ -30,6 +42,8 @@ class SignInFormBase extends Component {
 
   onSubmit = event => {
     const { email, password } = this.state;
+
+
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
@@ -56,33 +70,51 @@ class SignInFormBase extends Component {
 
     const isInvalid = password === '' || email === '';
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
-        {error && <p>{error.message}</p>}
-      </form>
+<div>
+<div>
+    <img src={AppLogo} width='500px' height='500px' style={{position:'absolute', left:'365px', top:'80px'}}/>
+</div>
+
+              <Card border="primary" text="black" style={{ width: '35rem', top:'120px', left:'880px' }}>
+                <Card.Body>
+                  <Card.Title style={{ fontSize: '40px' }}>Sign In</Card.Title>
+                  <Card.Text>
+                      <Form onSubmit={this.onSubmit}>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Email address</Form.Label>
+                          <Form.Control name="email" value={email} onChange={this.onChange} type="text" placeholder="Email Address" />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBasicPassword">
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control name="password" value={password} onChange={this.onChange} type="password" placeholder="Password" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" disabled={isInvalid} block>
+                          Log In
+                        </Button>
+                        {error && <p>{error.message}</p>}
+                        <SignUpLink />
+                        <PasswordForgetLink/>
+                      </Form>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+        <br />
+</div>
     );
   }
 }
+
+const SignInLink = () => (
+  <p>
+  Already have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </p>
+);
+
 const SignInForm = compose(
   withRouter,
   withFirebase,
 )(SignInFormBase);
 
 export default SignInPage;
-export { SignInForm }; // added onSubmit function
+export { SignInForm, SignInLink }; // added onSubmit function
