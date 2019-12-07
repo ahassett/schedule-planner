@@ -65,7 +65,7 @@ function populateSchedule(courses) {
     {time: '3:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, hrs: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, mins: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}},
     {time: '4:00 pm', Mon: '', Tues: '', Wed: '', Thurs: '', Fri: '', class_id: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, hrs: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}, mins: {Mon: '', Tues: '', Wed: '', Thurs: '', Fri: ''}}
   ]
-  let result
+  let result, detailsToDisplay = []
 
   courses.forEach((course, index) => {
     let day_time = course.timesOffered
@@ -147,6 +147,7 @@ function populateSchedule(courses) {
         if (prev_time.includes(time.slice(0, time.indexOf(':')))) {
 
           let filtered = (all_courses.filter(acourse => acourse.time.slice(0, acourse.time.indexOf(':')) === time.slice(0, time.indexOf(':'))))[0]
+          let temp_details
 
           // let tempKeys = Object.keys(filtered).filter(key => filtered[key] !== '')
           //
@@ -206,17 +207,24 @@ function populateSchedule(courses) {
 
               }
 
+              // preparations for alerting App.js about conflict in the schedule
               Object.keys(filtered).filter(key => filtered[key] !== '').forEach(itemkey => {
                 check.forEach(itemcheck => {
                   if (itemkey === itemcheck && filtered[itemkey] !== newclass) {
                     let con1 = filtered[itemkey].split(' ')
                     let con2 = newclass.split(' ')
                     result = [con1[1], con2[1]]
+                  } else {
+                    temp_details = {title: course.title, time: course.timesOffered, crn: course.crn, place: 'places'}
                   }
                 })
               })
 
+
             })
+
+            detailsToDisplay.push(temp_details)
+
         //  }
 
         } else {
@@ -258,6 +266,7 @@ function populateSchedule(courses) {
 
           all_courses.push({time: time, Mon: mon, Tues: tues, Wed: wed, Thurs: thurs, Fri: fri, class_id: id, hrs: hour, mins: minutes})
           prev_time.push(time.slice(0, time.indexOf(':')))
+          detailsToDisplay.push({title: course.title, time: course.timesOffered, crn: course.crn, place: 'places'})
         }
 
       })
@@ -279,9 +288,9 @@ function populateSchedule(courses) {
   })
 
   if (result) {
-    return [formatted, result]
+    return [formatted, result, detailsToDisplay]
   } else {
-    return formatted
+    return [formatted, detailsToDisplay]
   }
 
 
@@ -456,10 +465,7 @@ class App extends Component {
         alert: [],
         dropDownMenu: [ 'Spring 2019', 'Fall 2019', 'Spring 2020'],
         searchedTerm: '',
-        added_classes: [],
-        formatted_classes: [],
-        scheduleEmpty: true,
-        activeScheduleId: ''
+        scheduleEmpty: true
       };
 
       this.searchHandler = this.searchHandler.bind(this);
@@ -480,7 +486,7 @@ class App extends Component {
       // }
 
     //  const { list_schedules } = this.state
-
+console.log(this);
       let name = 'schedule_'.concat(Object.keys(this.state.list_schedules).length)
       let less = {}
       less[name] = name
@@ -488,7 +494,7 @@ class App extends Component {
 
 
       let listDepth = this.state.list_schedulesDepth.slice()
-      listDepth.push({id: name, scheduleName: name, classes: [], specFormatted: [], empty: true})
+      listDepth.push({id: name, scheduleName: name, classes: [], specFormatted: [], detail: [], empty: true})
 
       this.setState({ list_schedules: list})
       this.setState({ list_schedulesDepth: listDepth})
@@ -516,11 +522,12 @@ class App extends Component {
 
     addClass = (id) => {
       let temp_list = [], removed = [], new_class = []; // have to be lists in case a class has a lab they will be added together
+      let all_courseDetails
 
-      this.setState({ activeScheduleId: id[1]})
+      //this.setState({ activeScheduleId: id[1]})
 
       temp_list = this.state.list_schedulesDepth.filter(depth => depth.id === id[1])[0].classes
-      console.log('comp', temp_list);
+
       if (!temp_list) {
         temp_list = []
       }
@@ -534,14 +541,12 @@ class App extends Component {
 
             if (!temp_list.includes(classname) && classname.id === id[0] ){
               new_class.push(classname)
-              console.log('new', new_class);
             }
 
           } else {
 
             if (temp_list.includes(classname)){
               removed.push(classname)
-              console.log('rem', removed);
             }
 
           }
@@ -549,7 +554,6 @@ class App extends Component {
       })})
 
       //temp_list = this.state.added_classes.slice()
-      console.log('bdepth', this.state.list_schedulesDepth);
       // temp_list = this.state.list_schedulesDepth.filter(depth => depth.id === id[1])
       // console.log(temp_list);
       // temp_list = temp_list.classes
@@ -565,41 +569,38 @@ class App extends Component {
         removed.forEach(remove => {
           temp_list = temp_list.filter(item => item.title !== remove.title)
         })
-        console.log('arem', temp_list);
       }
 
       if (new_class) {
-        console.log('anewIn', temp_list);
-
         new_class.forEach(newClass => {
           temp_list.push(newClass)
         })
-        console.log('anew', temp_list);
       }
 
       let populate = populateSchedule(temp_list)
 
-      if (populate.length == 2) {
-        let popped = populate.pop()
+      if (populate.length == 3) {
+        let popped = populate[1]
+        all_courseDetails = populate[2]
         populate = populate[0]
         this.setState({showConflict: true})
         this.setState({alert: popped})
-        console.log("conflict", populate);
+      } else {
+        all_courseDetails = populate[1]
+        populate = populate[0]
       }
 
       //this.setState({scheduleEmpty: !temp_list.length})
-      //this.setState({added_classes: temp_list})
 
       let temp_depth = this.state.list_schedulesDepth.slice()
 
       temp_depth.forEach(depth => {
-        console.log('inDepth', temp_list);
+
         if (depth.id === id[1]) {
           depth.classes = temp_list
           depth.specFormatted = populate
+          depth.detail = all_courseDetails
           depth.empty = !temp_depth.length
-          console.log('classes added');
-          console.log(depth.classes);
         }
 
         // updating schedule names
@@ -609,7 +610,7 @@ class App extends Component {
           }
         })
       })
-console.log('depth', temp_depth);
+
       this.setState({list_schedulesDepth: temp_depth})
       console.log(this.state.list_schedulesDepth);
       //this.setState({formatted_classes: populate})
@@ -713,10 +714,10 @@ console.log('depth', temp_depth);
               {(!button_position) && <button className='temp_button button' onClick={this.createNewSchedule}>New Schedule</button>}
 
                 <div>
-                    {button_position && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
+                    {(list_schedulesDepth.length < 6 && button_position) && <button className='perm_button button' onClick={this.createNewSchedule}>New Schedule</button>}
                     {
                       list_schedulesDepth.map((item, index) => (
-                        <ScheduleList id={item.id} key={item.id} classes={item.specFormatted} delete_callback={this.handleDelete.bind(this, item.id)} name={item.scheduleName} nameCallback={this.handleScheduleName.bind(this, item.id)} isEmpty={item.empty}/> // we can use the key to refer to the schedule clicked
+                        <ScheduleList id={item.id} key={item.id} classes={item.specFormatted} delete_callback={this.handleDelete.bind(this, item.id)} name={item.scheduleName} nameCallback={this.handleScheduleName.bind(this, item.id)} schId={item.id} displayDetails={item.detail} isEmpty={item.empty}/> // we can use the key to refer to the schedule clicked
                     ))
                     }
                 </div>
