@@ -112,6 +112,14 @@
   float: right;
 }
 
+.num_icon {
+  width: 30px;
+  height: 30px;
+  margin: 0px 0px 0px 0px;
+  font-size: 1.8rem;
+  float: right;
+}
+
 .align_button {
   float: right;
   margin: 8px

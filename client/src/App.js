@@ -25,9 +25,11 @@ import SignOutButton from './components/SignOut';
 import * as ROUTES from './constants/routes';
 
 import { withAuthentication } from './session';
+
 import { withFirebase } from './database';
 
 class App extends Component {
+
 
     render() {
 
@@ -47,6 +49,8 @@ class App extends Component {
 
                     </div>
                   </Router>
+
+
           </div>
         );
     }

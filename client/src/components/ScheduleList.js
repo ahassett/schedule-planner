@@ -69,10 +69,15 @@ class ScheduleList extends Component {
           all_crn: [],
           details: false,
           coord: [0, 0],
-          showSave: false
+          showSave: false,
+          courseDetails: {}
       };
 
     }
+
+    // componentDidMount: function () {
+    //   window.addEventListener('mousedown', this.pageClick, false);
+    // },
 
     // changes state color of the star and state font of the schedule Name
     changeColor() {
@@ -104,10 +109,23 @@ class ScheduleList extends Component {
         this.setState({ width: 27 * 15 })
       }
     }
-    handleDetails(event) {
-      this.setState({ coord: [event.ClientX, event.ClientY]})
-      this.setState({ details: true})
-      console.log([event.ClientX, event.ClientY]);
+
+    handleDetails = (day, event) => {
+      let match
+
+      if (day) {
+        this.setState({ coord: [event.screenX, event.screenY]})
+        this.setState({ details: true})
+
+        day = day.slice(day.indexOf(' ') + 1)
+        day = day.slice(0, day.indexOf(' '))
+        day = day.slice(0, 4) + ' ' + day.slice(4)
+
+        match = this.props.displayDetails.filter(det => det.title.slice(0, 9) === day)
+
+        this.setState({ courseDetails: match[0]})
+      }
+
     }
 
     renderTableHeader() {
@@ -123,7 +141,7 @@ class ScheduleList extends Component {
     // contents of the schedule-table
     renderTableData() {
 
-      const { all_crn } = this.state
+      //const { all_crn, courseDetails } = this.state
 
       let col_content, pasthrs = {Mon: 0, Tues: 0, Wed: 0, Thurs: 0, Fri: 0}, hr_percent = {Mon: 0, Tues: 0, Wed: 0, Thurs: 0, Fri: 0}
       let col_array = ['#ffc0cb', '#4287f5', '#a337e6', '#d82feb', '#ed5170', '#ffa500', '#00ffff', '#b300b3', '#228B22']
@@ -141,8 +159,10 @@ class ScheduleList extends Component {
         let mon_color = '#ffffff', tues_color = '#ffffff', wed_color = '#ffffff', thurs_color = '#ffffff', fri_color = '#ffffff'
         let mon_color1 = '#ffffff', tues_color1 = '#ffffff', wed_color1 = '#ffffff', thurs_color1 = '#ffffff', fri_color1 = '#ffffff'
         let mon_color2 = '#ffffff', tues_color2 = '#ffffff', wed_color2 = '#ffffff', thurs_color2 = '#ffffff', fri_color2 = '#ffffff'
+        //let mon_text = '', tues_text = '', wed_text = '', thurs_text = '', fri_text = ''
 
         if (Mon !== '') {
+          // mon_text = Mon
 
           if (pasthrs.Mon !== 0) {
             mon_color1 = col_array[past_classId.Mon]
@@ -171,6 +191,7 @@ class ScheduleList extends Component {
         }
 
         if (Tues !== '') {
+          // tues_text = Tues
 
           if (pasthrs.Tues !== 0) {
             tues_color1 = col_array[past_classId.Tues]
@@ -201,6 +222,7 @@ class ScheduleList extends Component {
         }
 
         if (Wed !== '') {
+          // wed_text = Wed
 
           if (pasthrs.Wed!== 0) {
             wed_color1 = col_array[past_classId.Wed]
@@ -230,6 +252,7 @@ class ScheduleList extends Component {
         }
 
         if (Thurs !== '') {
+          // thurs_text = Thurs
 
           if (pasthrs.Thurs !== 0) {
             thurs_color1 = col_array[past_classId.Thurs]
@@ -260,6 +283,8 @@ class ScheduleList extends Component {
         }
 
         if (Fri !== '') {
+          // fri_text = Fri
+          // console.log(fri_text);
 
           if (pasthrs.Fri !== 0) {
             fri_color1 = col_array[past_classId.Fri]
@@ -290,11 +315,11 @@ class ScheduleList extends Component {
         return (
           <tr className={col_content} key={time.slice(0, time.search(/[:]/g))}>
             <td className={col_content}>{time}</td>
-            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this)}>{Mon}</td>
-            <td style={{background: `linear-gradient(to bottom, ${tues_color1} ${hr_percent.Tues.first}, ${tues_color} ${hr_percent.Tues.first} ${hr_percent.Tues.second},${tues_color2} ${hr_percent.Tues.second} )`}} className={col_content}>{Tues}</td>
-            <td style={{background: `linear-gradient(to bottom, ${wed_color1} ${hr_percent.Wed.first}, ${wed_color} ${hr_percent.Wed.first} ${hr_percent.Wed.second}, ${wed_color2} ${hr_percent.Wed.second} )`}} className={col_content}>{Wed}</td>
-            <td style={{background: `linear-gradient(to bottom, ${thurs_color1} ${hr_percent.Thurs.first}, ${thurs_color} ${hr_percent.Thurs.first} ${hr_percent.Thurs.second}, ${thurs_color2} ${hr_percent.Thurs.second} )`}} className={col_content}>{Thurs}</td>
-            <td style={{background: `linear-gradient(to bottom, ${fri_color1} ${hr_percent.Fri.first}, ${fri_color} ${hr_percent.Fri.first} ${hr_percent.Fri.second}, ${fri_color2} ${hr_percent.Fri.second} )`}} className={col_content}>{Fri}</td>
+            <td style={{background: `linear-gradient(to bottom, ${mon_color1} ${hr_percent.Mon.first}, ${mon_color} ${hr_percent.Mon.first} ${hr_percent.Mon.second}, ${mon_color2} ${hr_percent.Mon.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this, Mon)}>{Mon}</td>
+            <td style={{background: `linear-gradient(to bottom, ${tues_color1} ${hr_percent.Tues.first}, ${tues_color} ${hr_percent.Tues.first} ${hr_percent.Tues.second},${tues_color2} ${hr_percent.Tues.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this, Tues)}>{Tues}</td>
+            <td style={{background: `linear-gradient(to bottom, ${wed_color1} ${hr_percent.Wed.first}, ${wed_color} ${hr_percent.Wed.first} ${hr_percent.Wed.second}, ${wed_color2} ${hr_percent.Wed.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this, Wed)}>{Wed}</td>
+            <td style={{background: `linear-gradient(to bottom, ${thurs_color1} ${hr_percent.Thurs.first}, ${thurs_color} ${hr_percent.Thurs.first} ${hr_percent.Thurs.second}, ${thurs_color2} ${hr_percent.Thurs.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this, Thurs)}>{Thurs}</td>
+            <td style={{background: `linear-gradient(to bottom, ${fri_color1} ${hr_percent.Fri.first}, ${fri_color} ${hr_percent.Fri.first} ${hr_percent.Fri.second}, ${fri_color2} ${hr_percent.Fri.second} )`}} className={col_content} onMouseDown={this.handleDetails.bind(this, Fri)}>{Fri}</td>
           </tr>
         )
       })
@@ -314,10 +339,9 @@ class ScheduleList extends Component {
     }
 
     render() {
-      console.log(this.props.classes);
 
-      const { delete_callback } = this.props;
-      const { all_crn, coord, details, icon, title, show, showSave } = this.state;
+      const { delete_callback, schId } = this.props;
+      const { all_crn, coord, courseDetails, details, icon, title, show, showSave } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
@@ -367,7 +391,7 @@ class ScheduleList extends Component {
 
       // <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
       //   <img className={'img_icon'} src={email_icon} />
-      // </a>
+      // </a>  .slice(sch.indexOf('_')+1)
 
       return (
         <div className='all_schedules'>
@@ -379,7 +403,7 @@ class ScheduleList extends Component {
               style={width_change}
               onChange={this.handleChange.bind(this)}
             />
-
+            <p className={'num_icon'}>{schId.slice(schId.indexOf('_')+1)}</p>
             { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}}/> }
             { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)}/> }
             { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)}/> }
@@ -432,21 +456,22 @@ class ScheduleList extends Component {
             }
           </div>
 
-          <div id={'details_toast'} style={{position: 'fixed', top: coord[1] +'px', left: coord[2] + '150px', zIndex: 1}}>
+          <div id={'crn_toast'} style={{position: 'fixed', top: coord[1] +'px', left: coord[2] + '150px', zIndex: 1}}>
             { details &&
               <Toast
                 onClose={() => this.setState({ details: false })}
-                show={show}>
+                show={details}>
 
                   <Toast.Header>
-                    <strong className="mr-auto">Get your CRN's<br/>
-                    <small>Click button to copy to clipboard</small>
-                    </strong>
+                    <strong className="mr-auto">{courseDetails.title}</strong>
                   </Toast.Header>
 
                   <Toast.Body>
-                    {temp_crn.toString()}
-
+                    {courseDetails.time}
+                    <strong>{'    '}<br/></strong>
+                    {courseDetails.place}
+                    <strong>{' '}<br/></strong>
+                    CRN: {courseDetails.crn}
                   </Toast.Body>
               </Toast>
             }
