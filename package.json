@@ -2,7 +2,6 @@
   "name": "schedule-planner",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
@@ -21,16 +20,21 @@
     "recompose": "^0.30.0",
     "request": "^2.88.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "^1.16.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npm start --prefix client"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ahassett/schedule-planner.git"
   },
-  "author": "",
+  "author": [
+    "Angel Ngulumbi <angulumbi@middlebury.edu>",
+    "Aiko Hassett <ahassett@middlebury.edu>"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ahassett/schedule-planner/issues"
