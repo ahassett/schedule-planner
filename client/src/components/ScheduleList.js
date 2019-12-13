@@ -5,7 +5,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './ScheduleList.css';
 import star_icon from './star_icon.svg';
 import star from './star.svg';
-import email_icon from './email_icon.svg';
 import delete_icon from './delete_icon.svg';
 import pin_icon from './pin.svg';
 
@@ -66,7 +65,6 @@ class ScheduleList extends Component {
           width: undefined,
           col_contents: props.isEmpty,
           show: false,
-          all_crn: [],
           details: false,
           coord: [0, 0],
           showSave: false,
@@ -340,7 +338,7 @@ class ScheduleList extends Component {
     render() {
 
       const { delete_callback, schId } = this.props;
-      const { all_crn, coord, courseDetails, details, icon, title, show, showSave } = this.state;
+      const { coord, courseDetails, details, icon, title, show, showSave } = this.state;
       const width_change = {
         width: this.state.width ? this.state.width + 'px' : '140px'
       }
@@ -349,7 +347,7 @@ class ScheduleList extends Component {
       let temp_crn = [], actual_crn = [], raw_crn
 
       this.state.itemArray.forEach((itemArray, index) => {
-        const { time, Mon, Tues, Wed, Thurs, Fri, class_id, hrs, mins } = itemArray // destructuring
+        const { Mon, Tues, Wed, Thurs, Fri } = itemArray // destructuring
 
         if (Mon !== '') {
           raw_crn = Mon.split(' ')
@@ -390,7 +388,7 @@ class ScheduleList extends Component {
 
       // <a href="mailto:angulumbi@middlebury.edu?subject = Your Schedule&body=courses">
       //   <img className={'img_icon'} src={email_icon} />
-      // </a>  .slice(sch.indexOf('_')+1)
+      // </a>  .slice(sch.indexOf('_')+1) style={{fontSize: '12px'}}
 
       return (
         <div className='all_schedules'>
@@ -402,10 +400,10 @@ class ScheduleList extends Component {
               style={width_change}
               onChange={this.handleChange.bind(this)}
             />
-            <p style={{fontSize: '12px'}} className={'num_icon'}>{schId.slice(schId.indexOf('_')+1)}</p>
-            { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}}/> }
-            { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)}/> }
-            { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)}/> }
+            <p className='num_icon'>{schId.slice(schId.indexOf('_')+1)}</p>
+            { !icon && <img className={'img_icon'} src={delete_icon} onClick={() => {delete_callback()}} alt="delete_icon"/> }
+            { icon && <img className={'img_icon'} src={star} onClick={this.changeColor.bind(this)} alt="star"/> }
+            { !icon && <img className={'img_icon'} src={star_icon} onClick={this.changeColor.bind(this)} alt="star_icon"/> }
 
 
             { !this.state.col_contents && <input

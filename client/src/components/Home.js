@@ -306,7 +306,9 @@ class Home extends Component {
           scheduleEmpty: true,
           alert: [],
           showConflict: false,
-          list_schedulesDepth: []
+          list_schedulesDepth: [],
+          schedule_deleted: '',
+          schedule_conflict: ''
         };
 
         this.searchHandler = this.searchHandler.bind(this);
@@ -373,6 +375,7 @@ class Home extends Component {
         //this.setState({ activeScheduleId: id[1]})
 
         temp_list = this.state.list_schedulesDepth.filter(depth => depth.id === id[1])[0].classes
+        this.setState({ schedule_conflict: this.state.list_schedules[id[1]]})
 
         if (!temp_list) {
           temp_list = []
@@ -446,7 +449,7 @@ class Home extends Component {
         })
 
         this.setState({list_schedulesDepth: temp_depth})
-        console.log(this.state.list_schedulesDepth);
+        //console.log(this.state.list_schedulesDepth);
         //this.setState({formatted_classes: populate})
 
       }
@@ -466,6 +469,7 @@ class Home extends Component {
 
       // deletes a schedule when delete icon is clicked
       handleDelete = (item_id) => {
+        this.setState({ schedule_deleted: this.state.list_schedules[item_id] })
 
         let temp_keys = this.state.list_schedules
 
@@ -496,7 +500,7 @@ class Home extends Component {
       //   <FormControl id="inputlg" class="form-control input-lg" onChange={this.searchHandler} value={this.state.searchedTerm} type="text" placeholder="Search" className=" mr-sm-2" />
       // </Form>
       render() {
-          const {alert, list_schedules, list_schedulesDepth, button_position, show, showConflict} = this.state;
+          const {alert, list_schedules, list_schedulesDepth, button_position, schedule_conflict, schedule_deleted, show, showConflict} = this.state;
           console.log(list_schedulesDepth)
 
           return (
@@ -549,7 +553,7 @@ class Home extends Component {
 
                   <div className="div_toast">
                       { show && <Toast id="toast" onClose={() => this.setState({ show: false })} show={show} delay={1000} autohide>
-                        <Toast.Body>schedule deleted!</Toast.Body>
+                        <Toast.Body>{schedule_deleted} deleted!</Toast.Body>
                       </Toast> }
                   </div>
 
@@ -561,7 +565,7 @@ class Home extends Component {
                     { showConflict && <Toast onClose={() => this.setState({ showConflict: false })}>
                     <Toast.Header>
                       <strong className="mr-auto">Conflict Alert<br/>
-                      <strong>Schedule 0 has a conflict!</strong>
+                      <strong>{schedule_conflict} has a conflict!</strong>
                       </strong>
                     </Toast.Header>
                       <Toast.Body><p style={{color: 'red'}}>{alert[1]} conflicts with {alert[0]}; remove {alert[0]} to view the newly added course</p></Toast.Body>
